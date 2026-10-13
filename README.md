@@ -20,16 +20,16 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 | **Location** | Map tabs for the church and the reception, with “Directions” links. |
 | **RSVP** | Accept/decline, guest count, events, meal choice and wishes, with a heart-burst confirmation. The browser remembers the reply. |
 | **Personal links** | `index.html?to=Anna%20%26%20Family` shows “Dear Anna & Family” on the envelope and pre-fills the RSVP name. |
-| **Extras** | Falling petals, sparkle cursor (desktop), gallery lightbox (swipe/keys), share button, social preview image, `prefers-reduced-motion` support. |
+| **Extras** | Falling petals, sparkle cursor (desktop), share button, social preview image, `prefers-reduced-motion` support. |
 
 ## Edit the details
 
 Most details live in **`assets/js/config.js`**: names, date, venues, times, the RSVP deadline, the hashtag and the music.
 Elements tagged `data-field="…"` in `index.html` are filled from it automatically.
-Longer text (the love story, bios, order of the evening, dress code) is written directly in `index.html`.
+Longer text (the love story and the order of the evening) is written directly in `index.html`.
 
 > Venues come from the couple's earlier invitation: St. George Basilica, Angamaly (Holy Mass, 4:00 PM) and the Parish Hall
-> (Reception, 6:30 PM — please confirm this time). The love story, bios and order of the evening are placeholders to personalise.
+> (Reception, 6:30 PM — please confirm this time). The love story and order of the evening are placeholders to personalise.
 
 ### Make RSVPs reach you
 

@@ -276,9 +276,9 @@
   const dockLinks = $$("#dock a");
   const groups = [
     ["home", ["home"]],
-    ["story", ["verse", "journey", "couple", "story"]],
+    ["story", ["verse", "journey", "story"]],
     ["events", ["countdown", "events"]],
-    ["location", ["location", "gallery"]],
+    ["location", ["location"]],
     ["rsvp", ["rsvp", "thanks"]],
   ];
   const sectionOrder = groups.flatMap(([g, ids]) => ids.map((id) => [g, document.getElementById(id)])).filter(([, el]) => el);
@@ -415,45 +415,6 @@
     io.disconnect();
   }, { rootMargin: "600px 0px" }).observe($("#location"));
   showMap("mass");
-
-  /* ==========================================================
-     GALLERY LIGHTBOX
-     ========================================================== */
-  const shots = $$(".shot");
-  const lb = $("#lightbox");
-  const lbImg = $(".lightbox__img", lb);
-  let lbIndex = 0;
-  let lastFocus;
-  function lbShow(i) {
-    lbIndex = (i + shots.length) % shots.length;
-    const s = shots[lbIndex];
-    lbImg.src = s.dataset.full;
-    lbImg.alt = $("img", s).alt;
-    lbImg.style.animation = "none";
-    void lbImg.offsetWidth;
-    lbImg.style.animation = "";
-  }
-  function lbOpen(i) { lastFocus = document.activeElement; lb.hidden = false; lbShow(i); $(".lightbox__close", lb).focus(); }
-  function lbClose() { lb.hidden = true; lastFocus && lastFocus.focus(); }
-  shots.forEach((s, i) => s.addEventListener("click", () => lbOpen(i)));
-  $(".lightbox__close", lb).addEventListener("click", lbClose);
-  $(".lightbox__nav--prev", lb).addEventListener("click", () => lbShow(lbIndex - 1));
-  $(".lightbox__nav--next", lb).addEventListener("click", () => lbShow(lbIndex + 1));
-  lb.addEventListener("click", (e) => { if (e.target === lb) lbClose(); });
-  addEventListener("keydown", (e) => {
-    if (lb.hidden) return;
-    if (e.key === "Escape") lbClose();
-    if (e.key === "ArrowRight") lbShow(lbIndex + 1);
-    if (e.key === "ArrowLeft") lbShow(lbIndex - 1);
-  });
-  let touchX = null;
-  lb.addEventListener("touchstart", (e) => { touchX = e.touches[0].clientX; }, { passive: true });
-  lb.addEventListener("touchend", (e) => {
-    if (touchX == null) return;
-    const dx = e.changedTouches[0].clientX - touchX;
-    if (Math.abs(dx) > 45) lbShow(lbIndex + (dx < 0 ? 1 : -1));
-    touchX = null;
-  });
 
   /* ==========================================================
      RSVP
