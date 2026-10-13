@@ -75,6 +75,12 @@ After publishing:
 - Change the `og:image` meta tag in `index.html` to the full URL (e.g. `https://your-site/assets/img/og-image.jpg`) so WhatsApp and other apps show the preview card.
 - Send guests personal links such as `https://your-site/?to=Uncle%20Joseph%20%26%20Family`.
 
+## Check the live site
+
+In GitHub, open **Actions → Check live invitation → Run workflow**. It loads the published site from the public internet
+(no Vercel login), confirms every file matches the repo, checks caching and video streaming, and smoke-tests the
+invitation in a phone-sized and a desktop browser. Screenshots are attached to the run.
+
 ## Credits
 
 - **Images**: AI-generated in Figma (gemini-3.1-flash-image). The **hero film** is rendered from those images with `tools/make_hero_video.py`.

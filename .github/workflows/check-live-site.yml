@@ -1,0 +1,146 @@
+name: Check live invitation
+
+# Manually run from the Actions tab: verifies the published site from the public internet
+# (no Vercel login), checks every file against this commit, and smoke-tests it in a browser.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Live site URL (no trailing slash)
+        required: true
+        default: https://george-and-tess-wedding-m73p.vercel.app
+
+permissions:
+  contents: read
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE: ${{ inputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Public access, file integrity and headers
+        run: |
+          set -u
+          fail=0
+          note() { echo "$1"; echo "$1" >> "$GITHUB_STEP_SUMMARY"; }
+          hdr() { curl -sSI "$1" | tr -d '\r' | awk -v k="$2" -F': ' 'tolower($1)==k {print $2}' | tail -1; }
+
+          code=$(curl -sS -o /tmp/home.html -w '%{http_code}' "$SITE/")
+          note "GET / -> HTTP $code"
+          [ "$code" = 200 ] || fail=1
+          if grep -qiE 'vercel\.com/(login|sso)|Authentication Required' /tmp/home.html; then
+            note "FAIL: a Vercel login wall is in front of the site"; fail=1
+          fi
+
+          note ""
+          note "| file | http | content-type | bytes | matches repo |"
+          note "|---|---|---|---|---|"
+          for f in index.html $(git ls-files assets); do
+            url="$SITE/$f"; [ "$f" = index.html ] && url="$SITE/"
+            code=$(curl -sS -o /tmp/remote -w '%{http_code}' "$url")
+            ct=$(hdr "$url" content-type)
+            if cmp -s /tmp/remote "$f"; then ok=yes; else ok=NO; fail=1; fi
+            [ "$code" = 200 ] || fail=1
+            note "| $f | $code | $ct | $(wc -c < /tmp/remote) | $ok |"
+          done
+
+          note ""
+          range=$(curl -sS -r 0-1023 -o /dev/null -w '%{http_code}' "$SITE/assets/video/hero-mobile.mp4")
+          note "Video byte-range request -> HTTP $range (expect 206)"; [ "$range" = 206 ] || fail=1
+          note "Cache-Control image: $(hdr "$SITE/assets/img/rings.webp" cache-control)"
+          note "Cache-Control video: $(hdr "$SITE/assets/video/hero-mobile.mp4" cache-control)"
+          note "Cache-Control font:  $(hdr "$SITE/assets/fonts/cinzel.woff2" cache-control)"
+          note "X-Content-Type-Options: $(hdr "$SITE/" x-content-type-options)"
+          exit $fail
+
+      - uses: actions/setup-node@v4
+        if: success() || failure()
+        with:
+          node-version: 22
+
+      - name: Install headless Chromium
+        if: success() || failure()
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium
+
+      - name: Browser smoke test (phone + desktop)
+        if: success() || failure()
+        run: |
+          cat > /tmp/smoke.cjs <<'EOF'
+          const { chromium } = require(process.cwd() + '/node_modules/playwright');
+          const site = process.env.SITE;
+          (async () => {
+            const browser = await chromium.launch({ args: ['--autoplay-policy=no-user-gesture-required'] });
+            const results = {};
+            const sizes = {
+              phone: { viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, isMobile: true, hasTouch: true },
+              desktop: { viewport: { width: 1440, height: 900 } },
+            };
+            for (const [name, opts] of Object.entries(sizes)) {
+              const page = await (await browser.newContext(opts)).newPage();
+              const errors = [];
+              page.on('pageerror', (e) => errors.push('pageerror: ' + e.message));
+              page.on('console', (m) => { if (m.type() === 'error') errors.push('console: ' + m.text()); });
+              page.on('requestfailed', (r) => errors.push('failed: ' + r.url() + ' ' + (r.failure() || {}).errorText));
+              page.on('response', (r) => { if (r.status() >= 400) errors.push('http ' + r.status() + ': ' + r.url()); });
+              await page.goto(site + '/?to=Test%20Guest', { waitUntil: 'load' });
+              await page.waitForTimeout(1500);
+              await page.screenshot({ path: `shots/${name}-1-envelope.png` });
+              await page.click('#envelope', { force: true });
+              await page.waitForTimeout(5500);
+              await page.screenshot({ path: `shots/${name}-2-hero.png` });
+              const state = await page.evaluate(() => {
+                const v = document.querySelector('#hero-video');
+                const a = document.querySelector('#bg-music');
+                return {
+                  opened: document.body.classList.contains('is-open'),
+                  introHidden: document.querySelector('#intro').hidden,
+                  video: { src: v.currentSrc, playing: !v.paused, readyState: v.readyState },
+                  music: { src: a.currentSrc, playing: !a.paused },
+                  guest: document.querySelector('#intro-guest').textContent,
+                  place: document.querySelector('.hero__place').textContent.trim(),
+                  massVenue: document.querySelector('[data-field="events.mass.venue"]').textContent,
+                  receptionVenue: document.querySelector('[data-field="events.reception.venue"]').textContent,
+                  deadline: document.querySelector('[data-field="rsvp.deadlineLabel"]').textContent,
+                  days: document.querySelector('[data-unit="days"]').textContent,
+                };
+              });
+              const h = await page.evaluate(() => document.documentElement.scrollHeight);
+              for (let y = 0; y < h; y += 500) {
+                await page.evaluate((y) => window.scrollTo({ top: y, behavior: 'instant' }), y);
+                await page.waitForTimeout(120);
+              }
+              await page.waitForTimeout(1500);
+              await page.evaluate(() => document.querySelector('#events').scrollIntoView({ behavior: 'instant' }));
+              await page.waitForTimeout(1500);
+              await page.screenshot({ path: `shots/${name}-3-events.png` });
+              state.brokenImages = await page.evaluate(() =>
+                [...document.images].filter((i) => i.getAttribute('src') && (!i.complete || i.naturalWidth === 0)).map((i) => i.currentSrc || i.src));
+              state.fontsLoaded = await page.evaluate(() => [...document.fonts].filter((f) => f.status === 'loaded').map((f) => f.family));
+              // ignore Google Maps noise and media requests the browser cancels on purpose (range/seek)
+              state.errors = errors.filter((e) => !/google\.com|gstatic|googleapis/.test(e) && !/ERR_ABORTED/.test(e) );
+              results[name] = state;
+            }
+            await browser.close();
+            console.log('SMOKE_RESULT ' + JSON.stringify(results));
+            const bad = Object.values(results).some((r) =>
+              !r.opened || !r.introHidden || !r.video.playing || !r.music.src || r.brokenImages.length || r.errors.length);
+            process.exit(bad ? 1 : 0);
+          })();
+          EOF
+          mkdir -p shots
+          node /tmp/smoke.cjs | tee /tmp/smoke.log
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          sed -n 's/^SMOKE_RESULT //p' /tmp/smoke.log >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: screenshots
+          path: shots/
