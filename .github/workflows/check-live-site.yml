@@ -70,6 +70,7 @@ jobs:
 
       - name: Browser smoke test (phone + desktop)
         if: success() || failure()
+        shell: bash  # -eo pipefail, so a failing smoke test fails the step despite "| tee"
         run: |
           cat > /tmp/smoke.cjs <<'EOF'
           const { chromium } = require(process.cwd() + '/node_modules/playwright');

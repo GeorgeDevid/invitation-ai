@@ -13,6 +13,8 @@ window.WEDDING = {
   hashtag: "#GeorgeAndTessForever",
 
   // The countdown targets this moment (ISO 8601 with the venue's UTC offset).
+  // Changing a time? Update events.*.start/end/timeLabel below and this date; the
+  // schedule list and the <meta> descriptions in index.html are written out by hand.
   date: "2026-12-31T16:00:00+05:30",
   dateLabel: "Thursday, 31 December 2026",
   city: "Angamaly, Kerala",

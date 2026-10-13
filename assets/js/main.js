@@ -366,7 +366,7 @@
       out.push(cur);
       return out.join("\r\n");
     };
-    const blob = new Blob([lines.map(fold).join("\r\n")], { type: "text/calendar;charset=utf-8" });
+    const blob = new Blob([lines.map(fold).join("\r\n") + "\r\n"], { type: "text/calendar;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
     a.download = which === "all" ? "george-and-tess-wedding.ics" : `george-and-tess-${which}.ics`;
@@ -500,8 +500,12 @@
     const yes = d.attending.startsWith("Joy");
     const first = d.name.split(" ")[0];
     const summary = `${d.attending.toLowerCase()}${d.guests ? `, ${d.guests} guest${d.guests > 1 ? "s" : ""}` : ""}`;
-    const pending = SEND_STEP[d.delivery];
-    $("#rsvp-done-title").textContent = pending && !again ? `Almost there, ${first}!` : yes ? `Thank you, ${first}!` : "We'll miss you";
+    // Only an endpoint delivery is confirmed; anything else (incl. older saved replies) may not have been sent.
+    const pending = d.delivery === "sent" ? null : SEND_STEP[d.delivery] || SEND_STEP["whatsapp-pick"];
+    $("#rsvp-done-title").textContent = pending
+      ? again ? `Welcome back, ${first}` : `Almost there, ${first}!`
+      : yes ? `Thank you, ${first}!` : "We'll miss you";
+    $("#rsvp-again").textContent = pending ? "Review & send again" : "Change my reply";
     $("#rsvp-done-text").textContent = again
       ? pending
         ? `You prepared your reply (${summary}). If it wasn't sent, tap below to send it again.`
@@ -556,12 +560,27 @@
 
   $("#rsvp-again").addEventListener("click", () => { done.hidden = true; form.hidden = false; form.classList.add("is-in"); });
 
+  // Put a saved reply back into the form so "send again" resends exactly what the guest chose.
+  function restoreForm(saved) {
+    $("#f-name").value = saved.name || "";
+    $("#f-contact").value = saved.contact || "";
+    $("#f-msg").value = saved.message || "";
+    const yes = String(saved.attending || "").startsWith("Joy");
+    $$('input[name="attending"]', form).forEach((r) => { r.checked = r.value === (yes ? "yes" : "no"); });
+    yesBox.classList.toggle("is-collapsed", !yes);
+    if (yes) {
+      guests = clamp(Number(saved.guests) || 1, 1, 8);
+      countEl.textContent = guests;
+      if ([...$("#f-meal").options].some((o) => o.value === saved.meal)) $("#f-meal").value = saved.meal;
+      const chosen = String(saved.events || "").split(", ").filter(Boolean);
+      if (chosen.length) $$('input[name="events"]', form).forEach((c) => { c.checked = chosen.includes(c.value); });
+    }
+  }
+
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || "null");
     if (saved && saved.name) {
-      $("#f-name").value = saved.name;
-      $("#f-contact").value = saved.contact || "";
-      $("#f-msg").value = saved.message || "";
+      restoreForm(saved);
       showDone(saved, true);
     }
   } catch (_) { /* ignore */ }
