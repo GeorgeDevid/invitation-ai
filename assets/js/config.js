@@ -15,7 +15,7 @@ window.WEDDING = {
   // The countdown targets this moment (ISO 8601 with the venue's UTC offset).
   date: "2026-12-31T16:00:00+05:30",
   dateLabel: "Thursday, 31 December 2026",
-  city: "Kochi, Kerala",
+  city: "Angamaly, Kerala",
 
   events: {
     mass: {
@@ -23,25 +23,25 @@ window.WEDDING = {
       start: "2026-12-31T16:00:00+05:30",
       end: "2026-12-31T17:15:00+05:30",
       timeLabel: "4:00 PM",
-      venue: "Santa Cruz Cathedral Basilica",
-      address: "K.B. Jacob Road, Fort Kochi, Kochi, Kerala 682001",
-      mapQuery: "Santa Cruz Cathedral Basilica, Fort Kochi, Kerala",
+      venue: "St. George Basilica",
+      address: "Angamaly, Ernakulam, Kerala 683572",
+      mapQuery: "St. George Syro-Malabar Basilica, Angamaly, Kerala",
       note: "Kindly be seated by 3:45 PM",
     },
     reception: {
       title: "Wedding Reception",
       start: "2026-12-31T18:30:00+05:30",
-      end: "2027-01-01T00:30:00+05:30",
+      end: "2026-12-31T22:00:00+05:30",
       timeLabel: "6:30 PM",
-      venue: "Grand Hyatt Kochi Bolgatty",
-      address: "Bolgatty Island, Mulavukad, Kochi, Kerala 682504",
-      mapQuery: "Grand Hyatt Kochi Bolgatty, Kerala",
-      note: "Dinner, dancing & a New Year's Eve countdown",
+      venue: "Parish Hall, St. George Basilica",
+      address: "Angamaly, Ernakulam, Kerala 683572",
+      mapQuery: "St. George Syro-Malabar Basilica, Angamaly, Kerala",
+      note: "Dinner, toasts & celebration with family and friends",
     },
   },
 
   rsvp: {
-    deadlineLabel: "30 November 2026",
+    deadlineLabel: "15 December 2026",
     /*
      * Where RSVPs go — the first one that is set is used:
      *  1. endpoint: a Google Apps Script web-app URL (see README) or a
