@@ -355,7 +355,17 @@
     ids.forEach((id) => events[id] && lines.push(...vevent(id, events[id])));
     lines.push("END:VCALENDAR");
     // RFC 5545: fold lines longer than 75 octets
-    const fold = (l) => { const out = []; while (l.length > 73) { out.push(l.slice(0, 73)); l = " " + l.slice(73); } out.push(l); return out.join("\r\n"); };
+    const enc = new TextEncoder();
+    const fold = (line) => {
+      const out = [];
+      let cur = "";
+      for (const ch of line) { // by UTF-8 octets, never splitting a character
+        if (enc.encode(cur + ch).length > 74) { out.push(cur); cur = " "; }
+        cur += ch;
+      }
+      out.push(cur);
+      return out.join("\r\n");
+    };
     const blob = new Blob([lines.map(fold).join("\r\n")], { type: "text/calendar;charset=utf-8" });
     const a = document.createElement("a");
     a.href = URL.createObjectURL(blob);
@@ -509,19 +519,33 @@
       }
       return "sent";
     }
-    if (cfg.whatsapp) { window.open(`https://wa.me/${cfg.whatsapp.replace(/\D/g, "")}?text=${encodeURIComponent(asText(d))}`, "_blank"); return "whatsapp"; }
-    if (cfg.email) { location.href = `mailto:${cfg.email}?subject=${encodeURIComponent(`RSVP — ${d.name}`)}&body=${encodeURIComponent(asText(d))}`; return "email"; }
-    return "local";
+    if (cfg.email && !cfg.whatsapp) { location.href = `mailto:${cfg.email}?subject=${encodeURIComponent(`RSVP — ${d.name}`)}&body=${encodeURIComponent(asText(d))}`; return "email"; }
+    // WhatsApp: straight to the couple's number if configured, otherwise let the guest pick George or Tess
+    const num = (cfg.whatsapp || "").replace(/\D/g, "");
+    const wa = `https://wa.me/${num}?text=${encodeURIComponent(asText(d))}`;
+    if (!window.open(wa, "_blank")) location.href = wa;
+    return num ? "whatsapp" : "whatsapp-pick";
   }
+
+  const SEND_STEP = {
+    whatsapp: "One last step: tap send in WhatsApp so your reply reaches us.",
+    "whatsapp-pick": "One last step: in WhatsApp, choose George or Tess and tap send so your reply reaches us.",
+    email: "One last step: send the email that just opened so your reply reaches us.",
+  };
 
   function showDone(d, again) {
     form.hidden = true;
     done.hidden = false;
     const yes = d.attending.startsWith("Joy");
-    $("#rsvp-done-title").textContent = yes ? `Thank you, ${d.name.split(" ")[0]}!` : "We'll miss you";
+    const first = d.name.split(" ")[0];
+    const summary = `${d.attending.toLowerCase()}${d.guests ? `, ${d.guests} guest${d.guests > 1 ? "s" : ""}` : ""}`;
+    const pending = SEND_STEP[d.delivery];
+    $("#rsvp-done-title").textContent = pending && !again ? `Almost there, ${first}!` : yes ? `Thank you, ${first}!` : "We'll miss you";
     $("#rsvp-done-text").textContent = again
-      ? `We have your reply (${d.attending.toLowerCase()}${d.guests ? `, ${d.guests} guest${d.guests > 1 ? "s" : ""}` : ""}). You can change it below.`
-      : yes ? "Your seat is saved — we can't wait to celebrate with you under the lavender sky." : "Thank you for letting us know. You'll be in our hearts on our special day.";
+      ? pending
+        ? `You prepared your reply (${summary}). If it wasn't sent, tap below to send it again.`
+        : `We have your reply (${summary}). You can change it below.`
+      : pending || (yes ? "Your reply is with us — we can't wait to celebrate with you under the lavender sky." : "Thank you for letting us know. You'll be in our hearts on our special day.");
   }
 
   function burst(x, y) {
@@ -553,14 +577,13 @@
     submitBtn.classList.add("is-loading");
     $(".btn__text", submitBtn).textContent = "Sending…";
     try {
-      const how = await deliver(d);
+      d.delivery = await deliver(d);
       try { localStorage.setItem(STORE, JSON.stringify(d)); } catch (_) { /* storage may be blocked */ }
       const r = submitBtn.getBoundingClientRect();
       burst(r.left + r.width / 2, r.top + r.height / 2);
       showDone(d, false);
-      if (how === "local") toast("Reply saved on this device (RSVP delivery isn't set up yet).");
-      else if (how === "whatsapp") toast("Opening WhatsApp to send your reply…");
-      else if (how === "email") toast("Opening your mail app to send your reply…");
+      if (d.delivery === "email") toast("Opening your mail app…");
+      else if (d.delivery !== "sent") toast("Opening WhatsApp…");
     } catch (err) {
       errEl.textContent = "Hmm, that didn't go through. Please check your connection and try again.";
       errEl.hidden = false;

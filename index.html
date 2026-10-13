@@ -122,7 +122,7 @@
           <b>31</b>
           <span>Dec 2026</span>
         </div>
-        <p class="hero__place hero__line" style="--i:6"><span>Holy Mass at 4:00 PM</span><span class="sep" aria-hidden="true">·</span><span data-field="city">Angamaly, Kerala</span></p>
+        <p class="hero__place hero__line" style="--i:6"><span>Holy Mass at <span data-field="events.mass.timeLabel">4:00 PM</span></span><span class="sep" aria-hidden="true">·</span><span data-field="city">Angamaly, Kerala</span></p>
       </div>
 
       <a class="scroll-cue" href="#verse" aria-label="Scroll down">
@@ -150,10 +150,10 @@
     <section class="scene" id="journey" aria-label="Moments of George and Tess">
       <div class="scene__sticky">
         <div class="scene__glow" aria-hidden="true"></div>
-        <figure class="scene__img scene__img--a" data-scene="a"><img src="assets/img/couple-field.webp" alt="George and Tess embracing in a lavender field at golden hour" loading="lazy"></figure>
-        <figure class="scene__img scene__img--b" data-scene="b"><img src="assets/img/couple-arch.webp" alt="George and Tess beneath a wisteria floral arch" loading="lazy"></figure>
-        <figure class="scene__img scene__img--c" data-scene="c"><img src="assets/img/couple-walk.webp" alt="George and Tess walking hand in hand toward a candle-lit chapel" loading="lazy"></figure>
-        <figure class="scene__img scene__img--d" data-scene="d"><img src="assets/img/rings.webp" alt="Their hands with wedding rings over a lavender bouquet" loading="lazy"></figure>
+        <figure class="scene__img scene__img--a" data-scene="a"><img src="assets/img/couple-field.webp" alt="A bride and groom embracing in a lavender field at golden hour" loading="lazy"></figure>
+        <figure class="scene__img scene__img--b" data-scene="b"><img src="assets/img/couple-arch.webp" alt="A bride and groom beneath a wisteria floral arch" loading="lazy"></figure>
+        <figure class="scene__img scene__img--c" data-scene="c"><img src="assets/img/couple-walk.webp" alt="A bride and groom walking hand in hand toward a candle-lit chapel" loading="lazy"></figure>
+        <figure class="scene__img scene__img--d" data-scene="d"><img src="assets/img/rings.webp" alt="Hands with wedding rings over a lavender bouquet" loading="lazy"></figure>
         <figure class="scene__img scene__img--e" data-scene="e"><img src="assets/img/sparklers.webp" alt="A sparkler send-off under a violet sky" loading="lazy"></figure>
 
         <div class="scene__captions">
@@ -261,11 +261,12 @@
             <div class="timer__unit"><span class="timer__num" data-unit="minutes">00</span><span class="timer__label">Minutes</span></div>
             <div class="timer__unit"><span class="timer__num" data-unit="seconds">00</span><span class="timer__label">Seconds</span></div>
           </div>
-          <p class="countdown__date"><span data-field="dateLabel">Thursday, 31 December 2026</span> · 4:00 PM IST</p>
+          <p class="countdown__date"><span data-field="dateLabel">Thursday, 31 December 2026</span> · <span data-field="events.mass.timeLabel">4:00 PM</span> IST</p>
           <p class="countdown__done" id="countdown-done" hidden>We're married! Thank you for celebrating with us. 💜</p>
           <div class="btn-row">
             <button class="btn btn--light" type="button" data-ics="all"><svg class="ico"><use href="#i-calendar"/></svg> Add to calendar</button>
-            <a class="btn btn--ghost-light" data-gcal="mass" target="_blank" rel="noopener" href="#">Google Calendar</a>
+            <a class="btn btn--ghost-light" data-gcal="mass" target="_blank" rel="noopener" href="#">Google · Holy Mass</a>
+            <a class="btn btn--ghost-light" data-gcal="reception" target="_blank" rel="noopener" href="#">Google · Reception</a>
           </div>
         </div>
       </div>
@@ -281,7 +282,7 @@
 
         <div class="events__grid">
           <article class="event" data-reveal="fade-up">
-            <div class="event__media"><img src="assets/img/church.webp" alt="Cathedral aisle decorated with lavender florals and candles" loading="lazy" data-parallax-inner="0.12"></div>
+            <div class="event__media"><img src="assets/img/church.webp" alt="Illustration of a church aisle decorated with lavender florals and candles" loading="lazy" data-parallax-inner="0.12"></div>
             <div class="event__body glass">
               <span class="event__icon"><svg class="ico"><use href="#i-church"/></svg></span>
               <p class="kicker" data-field="events.mass.title">Holy Mass</p>
@@ -297,7 +298,7 @@
           </article>
 
           <article class="event" data-reveal="fade-up" style="--d:.15s">
-            <div class="event__media"><img src="assets/img/reception.webp" alt="Reception hall set with lavender centrepieces and candlelight" loading="lazy" data-parallax-inner="0.12"></div>
+            <div class="event__media"><img src="assets/img/reception.webp" alt="Illustration of a reception hall with lavender centrepieces and candlelight" loading="lazy" data-parallax-inner="0.12"></div>
             <div class="event__body glass">
               <span class="event__icon"><svg class="ico"><use href="#i-glass"/></svg></span>
               <p class="kicker" data-field="events.reception.title">Wedding Reception</p>
@@ -318,9 +319,9 @@
           <h3 class="schedule__title">Order of the Evening</h3>
           <ul class="schedule__list">
             <li data-reveal="fade-up" style="--d:.05s"><time>3:45 PM</time><span>Guests arrive &amp; are seated</span></li>
-            <li data-reveal="fade-up" style="--d:.1s"><time>4:00 PM</time><span>Holy Mass &amp; exchange of vows</span></li>
+            <li data-reveal="fade-up" style="--d:.1s"><time data-field="events.mass.timeLabel">4:00 PM</time><span>Holy Mass &amp; exchange of vows</span></li>
             <li data-reveal="fade-up" style="--d:.15s"><time>5:15 PM</time><span>Greetings &amp; family photographs</span></li>
-            <li data-reveal="fade-up" style="--d:.2s"><time>6:30 PM</time><span>Reception at the Parish Hall</span></li>
+            <li data-reveal="fade-up" style="--d:.2s"><time data-field="events.reception.timeLabel">6:30 PM</time><span>Reception at the Parish Hall</span></li>
             <li data-reveal="fade-up" style="--d:.25s"><time>7:00 PM</time><span>Toasts, first dance &amp; cake cutting</span></li>
             <li data-reveal="fade-up" style="--d:.3s"><time>7:45 PM</time><span>Dinner is served</span></li>
             <li data-reveal="fade-up" style="--d:.35s"><time>9:30 PM</time><span>Farewell &amp; sparkler send-off ✨</span></li>
@@ -330,14 +331,14 @@
         <!-- dress code -->
         <div class="dress" data-reveal="fade-up">
           <p class="kicker">Dress code</p>
-          <h3 class="dress__title">Formal · Black Tie Optional</h3>
-          <p class="dress__text">We'd love to see you in soft shades of lavender, lilac, ivory &amp; champagne.</p>
-          <ul class="swatches" aria-label="Suggested colours">
-            <li style="--c:#b9a2e3" title="Lavender"></li>
-            <li style="--c:#d8c7f2" title="Lilac"></li>
-            <li style="--c:#f6f0e6" title="Ivory"></li>
-            <li style="--c:#e8d2b0" title="Champagne"></li>
-            <li style="--c:#8e72c9" title="Violet"></li>
+          <h3 class="dress__title">Elegant Attire</h3>
+          <p class="dress__text">We kindly invite you to dress in elegant attire inspired by lavender, purple, sage green and white — soft tones that echo the grace of our celebration.</p>
+          <ul class="swatches" aria-label="Suggested colours: lavender, purple, white, sage green and soft lavender">
+            <li style="--c:#c4b5d8" title="Lavender"></li>
+            <li style="--c:#6b5b8a" title="Purple"></li>
+            <li style="--c:#ffffff" title="White"></li>
+            <li style="--c:#8fa68e" title="Sage green"></li>
+            <li style="--c:#e8e0f0" title="Soft lavender"></li>
           </ul>
         </div>
       </div>
@@ -441,8 +442,8 @@
 
             <fieldset class="checks">
               <legend>I'll be there for</legend>
-              <label><input type="checkbox" name="events" value="Holy Mass" checked><span>Holy Mass · 4:00 PM</span></label>
-              <label><input type="checkbox" name="events" value="Reception" checked><span>Reception · 6:30 PM</span></label>
+              <label><input type="checkbox" name="events" value="Holy Mass" checked><span><span class="checks__text">Holy Mass · <span data-field="events.mass.timeLabel">4:00 PM</span></span></span></label>
+              <label><input type="checkbox" name="events" value="Reception" checked><span><span class="checks__text">Reception · <span data-field="events.reception.timeLabel">6:30 PM</span></span></span></label>
             </fieldset>
           </div>
 
@@ -474,7 +475,7 @@
       <div class="container narrow finale__content">
         <p class="kicker" data-reveal="fade-up">With love &amp; gratitude</p>
         <h2 class="finale__names" data-reveal="blur">George <i>&amp;</i> Tess</h2>
-        <p class="finale__text" data-reveal="fade-up">Your presence is the greatest gift. Come celebrate love, laughter and the first sunrise of 2027 with us.</p>
+        <p class="finale__text" data-reveal="fade-up">Your presence is the greatest gift. Come celebrate love, laughter and the last sunset of 2026 with us.</p>
         <p class="finale__tag" data-reveal="fade-up" data-field="hashtag">#GeorgeAndTessForever</p>
         <button class="btn btn--light" type="button" id="share-btn" data-reveal="fade-up"><svg class="ico"><use href="#i-share"/></svg> Share invitation</button>
       </div>

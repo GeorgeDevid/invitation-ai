@@ -47,10 +47,10 @@ window.WEDDING = {
      *  1. endpoint: a Google Apps Script web-app URL (see README) or a
      *     Formspree URL like "https://formspree.io/f/xxxxxx".
      *  2. whatsapp: a phone number with country code, digits only,
-     *     e.g. "919876543210" — opens WhatsApp with the reply filled in.
+     *     e.g. "919876543210" — opens WhatsApp to you with the reply filled in.
      *  3. email: opens the guest's mail app with the reply filled in.
-     * With none set, replies are only saved in the guest's browser
-     * (handy while designing).
+     * With none set, WhatsApp opens with the reply filled in and the guest
+     * picks George or Tess to send it to.
      */
     endpoint: "",
     whatsapp: "",

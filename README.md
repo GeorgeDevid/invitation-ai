@@ -40,7 +40,8 @@ In `config.js` → `rsvp`, set **one** of these:
 2. **`whatsapp`**: your number with country code, digits only (e.g. `"919876543210"`). Each guest's reply opens WhatsApp, pre-written for them to send.
 3. **`email`**: opens the guest's mail app with the reply pre-written.
 
-If none is set, replies are only stored in the guest's own browser, which is useful while designing.
+If none is set, WhatsApp opens with the reply pre-written and the guest chooses George or Tess to send it to.
+The confirmation screen only says the reply has arrived when it was delivered through `endpoint`.
 
 ### Swap in your real photos
 
