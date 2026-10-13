@@ -63,17 +63,29 @@ python3 -m http.server 8000
 # open http://localhost:8000
 ```
 
-## Publish
+## Live site
 
-Any static host works:
+**https://george-and-tess-wedding-m73p.vercel.app** (Vercel project `george-and-tess-wedding-m73p`).
 
-- **GitHub Pages**: Settings → Pages → deploy from this branch, folder `/`.
-- **Vercel / Netlify**: import the repo with no build command and `/` as the output directory.
+Vercel's GitHub app is installed on a different GitHub account, so this deployment does not use a Git connection.
+Instead it was created with the two files in [`deploy/vercel/`](deploy/vercel). At build time `build.sh` downloads this
+public repo (branch `claude/hopeful-franklin-9yhtqq`) and publishes only `index.html` and `assets/`. All images, video
+and music are served from Vercel's CDN.
 
-After publishing:
+**To update the live site:** push your changes to this branch, then in Vercel open the project → *Deployments* →
+latest production deployment → **⋯ → Redeploy**. The build fetches the newest commit automatically.
 
-- Change the `og:image` meta tag in `index.html` to the full URL (e.g. `https://your-site/assets/img/og-image.jpg`) so WhatsApp and other apps show the preview card.
-- Send guests personal links such as `https://your-site/?to=Uncle%20Joseph%20%26%20Family`.
+> That Vercel project is also Git-linked to `GeorgeDevidJohn/george-and-tess-wedding`. A push to *that* repo would
+> redeploy the older invitation over this one. Disconnect it under *Settings → Git* if you no longer use it.
+
+Guests can be sent personal links such as
+`https://george-and-tess-wedding-m73p.vercel.app/?to=Uncle%20Joseph%20%26%20Family`.
+
+### Other hosts
+
+Any static host works: GitHub Pages (deploy from this branch, folder `/`), or Netlify/Vercel with no build command
+and `/` as the output directory. If the address changes, update `og:url` and `og:image` in `index.html` so WhatsApp
+shows the preview card.
 
 ## Check the live site
 
