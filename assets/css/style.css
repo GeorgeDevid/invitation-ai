@@ -604,7 +604,18 @@ body.is-open .scroll-cue { opacity: .9; }
    RSVP
    ========================================================== */
 .rsvp { overflow: hidden; color: #fff; isolation: isolate; }
-.rsvp__bg { background-image: url("../img/couple-arch.webp"); background-position: center 35%; }
+.rsvp__bg { background-image: url("../img/rsvp-ring.webp"); background-position: center 30%; }
+/* wide screens: the portrait photo shown whole and sharp, over a blurred copy that fills the sides */
+@media (min-aspect-ratio: 1/1) {
+  .rsvp__bg { background: none; }
+  .rsvp__bg::before, .rsvp__bg::after { content: ""; position: absolute; inset: 0; background: url("../img/rsvp-ring.webp") center 30% / cover no-repeat; }
+  .rsvp__bg::before { inset: -40px; filter: blur(28px) saturate(1.1); opacity: .85; }
+  .rsvp__bg::after {
+    inset: 0 auto; left: 50%; height: 100%; aspect-ratio: 9 / 16; transform: translateX(-50%);
+    -webkit-mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+    mask-image: linear-gradient(90deg, transparent, #000 18%, #000 82%, transparent);
+  }
+}
 .rsvp__veil { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, var(--lav-50) 0%, rgba(52, 28, 96, .68) 14%, rgba(40, 20, 76, .8) 80%, #2a1650 100%); }
 .rsvp-card, .rsvp-done { padding: clamp(24px, 5vw, 44px); }
 .field { position: relative; margin-bottom: 16px; }
