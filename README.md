@@ -39,7 +39,8 @@ Longer text (such as the order of the evening) is written directly in `index.htm
 
 Each reply becomes a row in the sheet's **RSVPs** tab (submitted at, full name, guests). The guest sees
 “Thank you, *name*!” only after the sheet confirms the row was saved; otherwise they are asked to try again.
-A guest who changes their reply from the same phone updates their existing row instead of adding a new one.
+A guest who changes their reply from the same phone updates their existing row instead of adding a new one;
+someone else replying from that phone under a different name gets a row of their own.
 
 Without an endpoint, the site falls back to `whatsapp` (your number, digits only with country code) or `email`
 from `config.js`, and with neither set WhatsApp opens with the reply pre-written for the guest to send to George or Tess.

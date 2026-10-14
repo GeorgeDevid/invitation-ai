@@ -12,7 +12,8 @@
  *  4. Copy the "Web app" URL (it ends in /exec) and put it in `rsvp.endpoint` in assets/js/config.js.
  *
  * Each reply becomes a row in the "RSVPs" tab: Submitted at · Full name · Guests · Reply ID.
- * If a guest changes their reply from the same phone or browser, their existing row is updated.
+ * If a guest changes their reply from the same phone or browser, their existing row is updated
+ * (a different name from the same phone gets its own row).
  * Opening the /exec URL in a browser shows {"ok":true,...} when the script is live.
  *
  * After editing this script later, use Deploy → Manage deployments → edit (pencil) → Version: New version,

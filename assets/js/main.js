@@ -432,7 +432,8 @@
   const errEl = $("#form-error");
   const submitBtn = $("#rsvp-submit");
   const STORE = "gt-rsvp-2026";
-  const STORE_ID = "gt-rsvp-id";
+  const STORE_IDS = "gt-rsvp-ids";
+  const memIds = {};
   let guests = 1;
 
   if (guest) $("#f-name").value = guest;
@@ -455,15 +456,17 @@
     };
   }
 
-  // One id per browser, so a guest who changes their reply updates their row in the sheet instead of adding one.
-  function replyId() {
-    let id = "";
-    try { id = localStorage.getItem(STORE_ID) || ""; } catch (_) { /* storage may be blocked */ }
-    if (!id) {
-      id = (crypto.randomUUID && crypto.randomUUID()) || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-      try { localStorage.setItem(STORE_ID, id); } catch (_) { /* fine: this reply just gets its own row */ }
+  // One id per guest name on this browser: a guest who changes their reply updates their own row in the sheet,
+  // while someone else replying from the same phone (a different name) gets a row of their own.
+  function replyId(name) {
+    const key = name.toLowerCase().replace(/\s+/g, " ").trim();
+    let ids = memIds;
+    try { ids = Object.assign(memIds, JSON.parse(localStorage.getItem(STORE_IDS) || "{}")); } catch (_) { /* storage may be blocked */ }
+    if (!ids[key]) {
+      ids[key] = (crypto.randomUUID && crypto.randomUUID()) || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+      try { localStorage.setItem(STORE_IDS, JSON.stringify(ids)); } catch (_) { /* kept in memory for this visit */ }
     }
-    return id;
+    return ids[key];
   }
 
   function asText(d) {
@@ -484,7 +487,7 @@
         try {
           const r = await fetch(cfg.endpoint, {
             method: "POST",
-            body: new URLSearchParams({ name: d.name, guests: String(d.guests), replyId: replyId() }),
+            body: new URLSearchParams({ name: d.name, guests: String(d.guests), replyId: replyId(d.name) }),
             signal: ctrl.signal,
           });
           const res = await r.json().catch(() => ({}));
