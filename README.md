@@ -10,7 +10,7 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 | Feature | How it works |
 | --- | --- |
 | **Tap to open** | The opening film (a lavender envelope with a gold wax seal) waits on its first frame. One tap starts the music and plays it, and the invitation fades in as the envelope opens to white. |
-| **Background music** | *Canon in D* (Pachelbel) arranged for harp, piano, violin & bass. It starts with the tap (as browsers require) and fades in. The floating disc button pauses or plays it. Music pauses when the tab is hidden. |
+| **Background music** | *My Love*, the couple's chosen song, loops softly in the background. It starts with the tap (as browsers require) and fades in. The floating disc button pauses or plays it. Music pauses when the tab is hidden. |
 | **AI hero film** | A looping cinematic video built from the AI-generated stills, with slow camera moves, crossfades, bloom and drifting fireflies. There is a landscape cut for desktop and a portrait cut for phones, with an MP4 + WebM fallback. |
 | **Parallax couple scene** | A pinned section where the couple's photos float in, drift and fade out as you scroll, with “chapter” captions. |
 | **Scroll animations** | Fade, blur and slide reveals, parallax florals and backgrounds, a hero that dissolves on scroll, a progress bar and a section-aware glass dock. |
@@ -97,7 +97,6 @@ invitation in a phone-sized and a desktop browser. Screenshots are attached to t
 ## Credits
 
 - **Images**: AI-generated in Figma (gemini-3.1-flash-image). The **hero film** is rendered from those images with `tools/make_hero_video.py`.
-- **Music**: Johann Pachelbel, *Canon in D* (public domain). Rendered with `tools/compose_canon.py` using
-  [Salamander Grand Piano](https://github.com/Tonejs/audio) samples by Alexander Holm (CC BY 3.0) and
-  [VSCO 2 Community Edition](https://github.com/nbrosowsky/tonejs-instruments) harp, violin and contrabass samples (CC0).
+- **Music**: *My Love*, supplied by the couple (`assets/audio/my-love.mp3`, trimmed and loudness-matched for background play).
+  `tools/compose_canon.py` can still render the earlier harp/piano *Canon in D* arrangement if you prefer it.
 - **Fonts**: Great Vibes, Cormorant Garamond and Cinzel (SIL Open Font License), self-hosted as Latin subsets.

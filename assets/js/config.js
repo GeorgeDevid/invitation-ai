@@ -60,8 +60,8 @@ window.WEDDING = {
   },
 
   music: {
-    src: "assets/audio/canon-in-d.mp3",
-    title: "Canon in D · Pachelbel",
+    src: "assets/audio/my-love.mp3",
+    title: "My Love",
     volume: 0.6,
   },
 };
