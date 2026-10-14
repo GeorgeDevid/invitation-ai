@@ -245,6 +245,20 @@ a { color: inherit; }
 body.is-reading .petals { opacity: .5; }
 body.is-typing .petals { opacity: .08; }
 .progress { position: fixed; top: 0; left: 0; right: 0; height: 3px; z-index: 60; pointer-events: none; }
+.scrollbar {
+  position: fixed; top: 50%; right: 5px; z-index: 60; width: 4px; height: min(44vh, 320px); transform: translateY(-50%);
+  border-radius: 4px; background: rgba(143, 111, 207, .2); box-shadow: 0 0 0 1px rgba(255, 255, 255, .45), 0 1px 6px rgba(45, 24, 86, .18);
+  pointer-events: none; opacity: 0; transition: opacity .8s var(--ease) 1.2s;
+}
+body.is-open.has-overlay-scrollbar .scrollbar { opacity: 1; }
+.scrollbar span { position: absolute; left: 0; right: 0; top: 0; height: 18px; border-radius: inherit; background: linear-gradient(180deg, var(--lav-400), var(--lav-600)); box-shadow: 0 0 6px rgba(118, 87, 182, .55); }
+/* desktop browsers that show a real scroll bar: make it slim and lavender */
+@media (hover: hover) and (pointer: fine) {
+  html { scrollbar-width: thin; scrollbar-color: var(--lav-400) var(--lav-50); }
+  ::-webkit-scrollbar { width: 8px; }
+  ::-webkit-scrollbar-track { background: var(--lav-50); }
+  ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, var(--lav-400), var(--lav-600)); border-radius: 8px; border: 2px solid var(--lav-50); }
+}
 .progress span { display: block; height: 100%; background: linear-gradient(90deg, var(--lav-400), var(--gold), var(--lav-500)); transform-origin: 0 50%; transform: scaleX(0); }
 
 .sparkle {
@@ -446,11 +460,10 @@ body.is-open .hero__line { animation: heroIn 1.4s var(--ease) forwards; animatio
   opacity: 0;
   transition: opacity 1s 2.2s;
 }
-body.is-open .scroll-cue { opacity: .9; }
-.scroll-cue__mouse { width: 24px; height: 38px; border: 1.5px solid rgba(255, 255, 255, .85); border-radius: 14px; position: relative; }
-.scroll-cue__mouse span { position: absolute; left: 50%; top: 7px; width: 4px; height: 8px; margin-left: -2px; border-radius: 2px; background: #fff; animation: wheel 1.8s var(--ease) infinite; }
-@keyframes wheel { 0% { opacity: 0; transform: translateY(-4px); } 30% { opacity: 1; } 100% { opacity: 0; transform: translateY(12px); } }
-.scroll-cue__text { font-family: var(--f-caps); font-size: 10px; letter-spacing: .4em; text-transform: uppercase; }
+body.is-open .scroll-cue { opacity: 1; }
+.scroll-cue__text { font-family: var(--f-caps); font-size: 13px; font-weight: 500; letter-spacing: .32em; padding-left: .32em; text-transform: uppercase; white-space: nowrap; }
+.scroll-cue__arrow { width: 28px; height: 28px; filter: drop-shadow(0 1px 2px rgba(20, 8, 40, .6)); animation: cueBob 1.9s ease-in-out infinite; }
+@keyframes cueBob { 0%, 100% { transform: translateY(-3px); opacity: .75; } 50% { transform: translateY(7px); opacity: 1; } }
 
 /* ==========================================================
    VERSE
@@ -695,6 +708,25 @@ body.is-open .scroll-cue { opacity: .9; }
 @media (max-width: 859px) {
   .js [data-reveal="fade-right"]:not(.is-in), .js [data-reveal="fade-left"]:not(.is-in) { transform: translateY(46px); }
 }
+
+/* ==========================================================
+   READABILITY — a small drop shadow behind text
+   ========================================================== */
+:root {
+  --ts-soft: 0 1px 1.5px rgba(70, 40, 120, .16);                                  /* dark text on light sections */
+  --ts-dark: 0 1px 2px rgba(20, 8, 40, .6), 0 2px 12px rgba(20, 8, 40, .38);      /* light text over photos & film */
+}
+body { text-shadow: var(--ts-soft); }
+.hero, .intro, .countdown, .rsvp, .finale, .hero .kicker, .hero__invite, .hero__place, .intro__kicker, .intro__hint, .scroll-cue { text-shadow: var(--ts-dark); }
+.script-title { text-shadow: 0 1px 2px rgba(70, 40, 120, .18), 0 6px 30px rgba(143, 111, 207, .25); }
+.script-title--light { text-shadow: 0 2px 3px rgba(20, 8, 40, .55), 0 6px 30px rgba(20, 8, 40, .45); }
+.hero__name { text-shadow: 0 2px 4px rgba(20, 8, 40, .5), 0 8px 40px rgba(30, 12, 60, .55), 0 0 60px rgba(199, 176, 236, .55); }
+.hero__amp { text-shadow: 0 1px 3px rgba(20, 8, 40, .55), 0 0 30px rgba(230, 207, 159, .7); }
+.intro__guest { text-shadow: 0 2px 3px rgba(20, 8, 40, .55), 0 4px 22px rgba(30, 12, 60, .6); }
+.timer__num { text-shadow: 0 1px 3px rgba(20, 8, 40, .55), 0 0 24px rgba(199, 176, 236, .8); }
+.finale__names { text-shadow: 0 2px 4px rgba(20, 8, 40, .55), 0 0 50px rgba(199, 176, 236, .7); }
+/* no shadow where it would muddy the text: solid white buttons and the gradient-filled RSVP title */
+.btn--light, .rsvp__heading { text-shadow: none; }
 
 /* ==========================================================
    REDUCED MOTION

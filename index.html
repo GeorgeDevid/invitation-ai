@@ -67,6 +67,7 @@
   <!-- ============ AMBIENT LAYERS ============ -->
   <canvas class="petals" id="petals" aria-hidden="true"></canvas>
   <div class="progress" aria-hidden="true"><span id="progress-bar"></span></div>
+  <div class="scrollbar" aria-hidden="true"><span id="scroll-thumb"></span></div>
 
   <!-- ============ MUSIC TOGGLE ============ -->
   <button class="music glass" id="music-btn" type="button" aria-label="Play music" aria-pressed="false">
@@ -115,8 +116,8 @@
       </div>
 
       <a class="scroll-cue" href="#verse" aria-label="Scroll down">
-        <span class="scroll-cue__mouse"><span></span></span>
-        <span class="scroll-cue__text">Scroll</span>
+        <span class="scroll-cue__text">Scroll down</span>
+        <svg class="scroll-cue__arrow" viewBox="0 0 24 24" aria-hidden="true"><path d="M6 6.5l6 6 6-6M6 12.5l6 6 6-6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
       </a>
     </header>
 

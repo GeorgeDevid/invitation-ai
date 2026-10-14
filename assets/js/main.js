@@ -134,6 +134,7 @@
     intro.classList.add("is-leaving");
     document.body.classList.remove("is-locked");
     document.body.classList.add("is-open");
+    requestAnimationFrame(render); // page is scrollable now: size the right-side scroll bar
     video.play().catch(() => {});
     musicBtn.classList.add("show-label");
     setTimeout(() => musicBtn.classList.remove("show-label"), 3500);
@@ -176,6 +177,7 @@
      SCROLL ENGINE — parallax, scene, progress
      ========================================================== */
   const progressBar = $("#progress-bar");
+  const scrollThumb = $("#scroll-thumb");
   const hero = $("#home");
   const heroContent = $("[data-hero-content]");
   const heroMedia = $("[data-hero-media]");
@@ -219,6 +221,13 @@
     const y = scrollY;
     const max = document.documentElement.scrollHeight - vh;
     progressBar.style.transform = `scaleX(${max > 0 ? y / max : 0})`;
+    // slim scroll bar on the right: thumb size = share of the page on screen, position = how far down we are
+    const track = scrollThumb.parentElement.clientHeight;
+    const thumb = Math.max(18, track * Math.min(1, vh / (max + vh)));
+    scrollThumb.style.height = `${thumb}px`;
+    scrollThumb.style.transform = `translateY(${max > 0 ? (track - thumb) * (y / max) : 0}px)`;
+    // only show it where the browser hides its own scroll bar (phones, macOS overlay scroll bars)
+    document.body.classList.toggle("has-overlay-scrollbar", innerWidth - document.documentElement.clientWidth === 0);
     document.body.classList.toggle("is-reading", y > vh * 0.85);
 
     // hero: content drifts up & fades, film slowly zooms
