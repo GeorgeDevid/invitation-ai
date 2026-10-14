@@ -93,6 +93,11 @@ In GitHub, open **Actions → Check live invitation → Run workflow**. It loads
 (no Vercel login), confirms every file matches the repo, checks caching and video streaming, and smoke-tests the
 invitation in a phone-sized and a desktop browser. Screenshots are attached to the run.
 
+**Actions → Test RSVP to Google Sheet** checks the Apps Script is reachable, then sends one test RSVP from the live
+site in Chrome, Safari (WebKit) and Firefox engines and confirms each shows the thank-you message. It adds three
+"TEST … please delete" rows to the sheet. If its health check shows a Google sign-in page, set the web app's
+*Who has access* to **Anyone** (Deploy → Manage deployments → Edit → New version).
+
 ## Credits
 
 - **Images**: AI-generated in Figma (gemini-3.1-flash-image), plus the couple's own photos. The **hero film** is an AI-generated clip supplied by the couple (Adobe Firefly), slowed and looped with `tools/make_hero_loop.sh`.
