@@ -617,6 +617,14 @@ body.is-open .scroll-cue { opacity: .9; }
   }
 }
 .rsvp__veil { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, var(--lav-50) 0%, rgba(52, 28, 96, .68) 14%, rgba(40, 20, 76, .8) 80%, #2a1650 100%); }
+.rsvp__heading {
+  margin: 0; font-family: var(--f-caps); font-weight: 600; line-height: 1;
+  font-size: clamp(54px, 13vw, 96px); letter-spacing: .32em; padding-left: .32em; /* re-centre the tracked letters */
+  background: linear-gradient(180deg, #fff 30%, var(--gold-soft)); -webkit-background-clip: text; background-clip: text; color: transparent;
+  filter: drop-shadow(0 6px 26px rgba(20, 8, 40, .5));
+}
+.rsvp__heading::after { content: ""; display: block; width: 72px; height: 1px; margin: 22px auto 0; background: linear-gradient(90deg, transparent, var(--gold-soft), transparent); }
+.rsvp__subtitle { margin: 14px 0 10px; font-size: clamp(40px, 8vw, 58px); }
 .rsvp-card, .rsvp-done { padding: clamp(24px, 5vw, 44px); }
 .field { position: relative; margin-bottom: 16px; }
 .field input {

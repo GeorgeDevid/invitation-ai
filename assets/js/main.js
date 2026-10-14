@@ -432,6 +432,7 @@
   const errEl = $("#form-error");
   const submitBtn = $("#rsvp-submit");
   const STORE = "gt-rsvp-2026";
+  const STORE_ID = "gt-rsvp-id";
   let guests = 1;
 
   if (guest) $("#f-name").value = guest;
@@ -454,6 +455,17 @@
     };
   }
 
+  // One id per browser, so a guest who changes their reply updates their row in the sheet instead of adding one.
+  function replyId() {
+    let id = "";
+    try { id = localStorage.getItem(STORE_ID) || ""; } catch (_) { /* storage may be blocked */ }
+    if (!id) {
+      id = (crypto.randomUUID && crypto.randomUUID()) || `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
+      try { localStorage.setItem(STORE_ID, id); } catch (_) { /* fine: this reply just gets its own row */ }
+    }
+    return id;
+  }
+
   function asText(d) {
     return [`RSVP — ${couple} · 31 Dec 2026`, `Name: ${d.name}`, `Guests: ${d.guests}`].join("\n");
   }
@@ -465,8 +477,21 @@
         const r = await fetch(cfg.endpoint, { method: "POST", headers: { "Content-Type": "application/json", Accept: "application/json" }, body: JSON.stringify(d) });
         if (!r.ok) throw new Error("Formspree error");
       } else {
-        // Google Apps Script web app (see README) — opaque response by design
-        await fetch(cfg.endpoint, { method: "POST", mode: "no-cors", body: new URLSearchParams(Object.entries(d).map(([k, v]) => [k, String(v)])) });
+        // Google Apps Script web app (docs/rsvp-google-sheets.gs). A form-encoded POST needs no CORS preflight, and
+        // Apps Script answers with CORS headers, so we can read its reply and only say "thank you" once the row is saved.
+        const ctrl = new AbortController();
+        const timer = setTimeout(() => ctrl.abort(), 20000);
+        try {
+          const r = await fetch(cfg.endpoint, {
+            method: "POST",
+            body: new URLSearchParams({ name: d.name, guests: String(d.guests), replyId: replyId() }),
+            signal: ctrl.signal,
+          });
+          const res = await r.json().catch(() => ({}));
+          if (!r.ok || !res.ok) throw new Error(res.error || "RSVP not saved");
+        } finally {
+          clearTimeout(timer);
+        }
       }
       return "sent";
     }
@@ -496,8 +521,8 @@
     $("#rsvp-done-text").textContent = again
       ? pending
         ? `You prepared your reply for ${guestText(count)}. If it wasn't sent, tap below to send it again.`
-        : `We have your reply for ${guestText(count)}. You can change it below.`
-      : pending || `We've saved ${guestText(count)} for you — we can't wait to celebrate with you under the lavender sky.`;
+        : `We have your RSVP for ${guestText(count)}. You can change it below.`
+      : pending || `Your RSVP for ${guestText(count)} has been received. We can't wait to celebrate with you under the lavender sky.`;
   }
 
   function burst(x, y) {
@@ -533,10 +558,11 @@
       const r = submitBtn.getBoundingClientRect();
       burst(r.left + r.width / 2, r.top + r.height / 2);
       showDone(d, false);
-      if (d.delivery === "email") toast("Opening your mail app…");
-      else if (d.delivery !== "sent") toast("Opening WhatsApp…");
+      if (d.delivery === "sent") toast("Thank you! Your RSVP has been saved 💜");
+      else if (d.delivery === "email") toast("Opening your mail app…");
+      else toast("Opening WhatsApp…");
     } catch (err) {
-      errEl.textContent = "Hmm, that didn't go through. Please check your connection and try again.";
+      errEl.textContent = "Sorry, we couldn't save your reply just now. Please check your connection and try again.";
       errEl.hidden = false;
     } finally {
       submitBtn.classList.remove("is-loading");

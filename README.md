@@ -18,7 +18,7 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 | **Countdown** | Live days / hours / minutes / seconds to 31 Dec 2026, 4:00 PM IST. |
 | **Calendar** | A one-tap `.ics` file (both events, with a reminder 1 day before) plus a Google Calendar link. |
 | **Location** | Map tabs for the church and the reception, with “Directions” links. |
-| **RSVP** | Just the guest's full name and number of guests, with a heart-burst confirmation. The browser remembers the reply so a returning guest can resend it. |
+| **RSVP** | Just the guest's full name and number of guests. Replies are saved to your Google Sheet, and the guest gets a “Thank you” confirmation with a heart burst once it is saved. A returning guest sees their reply and can change it. |
 | **Personal links** | `index.html?to=Anna%20%26%20Family` shows “Dear Anna & Family” on the opening screen and pre-fills the RSVP name. |
 | **Extras** | Falling petals, sparkle cursor (desktop), share button, social preview image, `prefers-reduced-motion` support. |
 
@@ -31,17 +31,18 @@ Longer text (such as the order of the evening) is written directly in `index.htm
 > Venues come from the couple's earlier invitation: St. George Basilica, Angamaly (Holy Mass, 4:00 PM) and the Parish Hall
 > (Reception, 6:30 PM — please confirm this time). The order of the evening is a placeholder to personalise.
 
-### Make RSVPs reach you
+### Make RSVPs reach you (Google Sheet)
 
-In `config.js` → `rsvp`, set **one** of these:
+1. Follow the steps at the top of [`docs/rsvp-google-sheets.gs`](docs/rsvp-google-sheets.gs): create a Google Sheet,
+   paste the script into *Extensions → Apps Script*, and deploy it as a web app (*Execute as: Me*, *Who has access: Anyone*).
+2. Put the web app URL (ending in `/exec`) in `assets/js/config.js` → `rsvp.endpoint`.
 
-1. **`endpoint`**: replies are saved straight into a Google Sheet. Follow the steps at the top of
-   [`docs/rsvp-google-sheets.gs`](docs/rsvp-google-sheets.gs) (it takes about 2 minutes). A Formspree URL also works.
-2. **`whatsapp`**: your number with country code, digits only (e.g. `"919876543210"`). Each guest's reply opens WhatsApp, pre-written for them to send.
-3. **`email`**: opens the guest's mail app with the reply pre-written.
+Each reply becomes a row in the sheet's **RSVPs** tab (submitted at, full name, guests). The guest sees
+“Thank you, *name*!” only after the sheet confirms the row was saved; otherwise they are asked to try again.
+A guest who changes their reply from the same phone updates their existing row instead of adding a new one.
 
-If none is set, WhatsApp opens with the reply pre-written and the guest chooses George or Tess to send it to.
-The confirmation screen only says the reply has arrived when it was delivered through `endpoint`.
+Without an endpoint, the site falls back to `whatsapp` (your number, digits only with country code) or `email`
+from `config.js`, and with neither set WhatsApp opens with the reply pre-written for the guest to send to George or Tess.
 
 ### Swap in your real photos
 

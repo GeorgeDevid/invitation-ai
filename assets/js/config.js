@@ -46,8 +46,8 @@ window.WEDDING = {
     deadlineLabel: "15 December 2026",
     /*
      * Where RSVPs go — the first one that is set is used:
-     *  1. endpoint: a Google Apps Script web-app URL (see README) or a
-     *     Formspree URL like "https://formspree.io/f/xxxxxx".
+     *  1. endpoint: the Google Sheet's Apps Script web-app URL, ending in /exec
+     *     (setup steps in docs/rsvp-google-sheets.gs), or a Formspree URL.
      *  2. whatsapp: a phone number with country code, digits only,
      *     e.g. "919876543210" — opens WhatsApp to you with the reply filled in.
      *  3. email: opens the guest's mail app with the reply filled in.
