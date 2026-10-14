@@ -49,10 +49,10 @@ jobs:
           done
 
           note ""
-          range=$(curl -sS -r 0-1023 -o /dev/null -w '%{http_code}' "$SITE/assets/video/hero-mobile.mp4")
+          range=$(curl -sS -r 0-1023 -o /dev/null -w '%{http_code}' "$SITE/assets/video/lavender-mobile.mp4")
           note "Video byte-range request -> HTTP $range (expect 206)"; [ "$range" = 206 ] || fail=1
           note "Cache-Control image: $(hdr "$SITE/assets/img/story-4-ring.webp" cache-control)"
-          note "Cache-Control video: $(hdr "$SITE/assets/video/hero-mobile.mp4" cache-control)"
+          note "Cache-Control video: $(hdr "$SITE/assets/video/lavender-mobile.mp4" cache-control)"
           note "Cache-Control font:  $(hdr "$SITE/assets/fonts/cinzel.woff2" cache-control)"
           note "X-Content-Type-Options: $(hdr "$SITE/" x-content-type-options)"
           exit $fail

@@ -100,7 +100,7 @@
     const mode = portrait() ? "mobile" : "desktop";
     if (mode === videoMode) return;
     videoMode = mode;
-    video.poster = mode === "mobile" ? video.dataset.posterMobile : "assets/img/hero-desktop-poster.webp";
+    video.poster = mode === "mobile" ? video.dataset.posterMobile : "assets/img/lavender-desktop-poster.webp";
     const saveData = navigator.connection && navigator.connection.saveData;
     if (saveData) return;
     let src = mode === "mobile" ? video.dataset.srcMobile : video.dataset.srcDesktop;

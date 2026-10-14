@@ -11,7 +11,7 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 | --- | --- |
 | **Tap to open** | The opening film (a lavender envelope with a gold wax seal) waits on its first frame. One tap starts the music and plays it, and the invitation fades in as the envelope opens to white. |
 | **Background music** | *My Love*, the couple's chosen song, loops softly in the background. It starts with the tap (as browsers require) and fades in. The floating disc button pauses or plays it. Music pauses when the tab is hidden. |
-| **AI hero film** | A looping cinematic video built from the AI-generated stills, with slow camera moves, crossfades, bloom and drifting fireflies. There is a landscape cut for desktop and a portrait cut for phones, with an MP4 + WebM fallback. |
+| **Hero film** | The couple walking hand in hand through a lavender field at sunset as the flowers sway in the wind. It is slowed to 60% speed with motion interpolation, so it stays smooth, and its end crossfades into its start, so the loop never jumps. There is a landscape cut for desktop and a portrait cut for phones, with an MP4 + WebM fallback. |
 | **Parallax couple scene** | A pinned section where the couple's photos float in, drift and fade out as you scroll, with “chapter” captions. |
 | **Scroll animations** | Fade, blur and slide reveals, parallax florals and backgrounds, a hero that dissolves on scroll, a progress bar and a section-aware glass dock. |
 | **Glass UI** | Frosted `backdrop-filter` cards, dock, music player, tabs and form, in a lavender, lilac and champagne-gold palette. |
@@ -46,16 +46,13 @@ The confirmation screen only says the reply has arrived when it was delivered th
 ### Swap in your real photos
 
 Replace the files in `assets/img/` and keep the same names, or change the paths in `index.html`.
-To re-render the hero film from the new photos:
+To use a different clip for the hero film (it is slowed and looped automatically):
 
 ```bash
-python3 tools/make_hero_video.py assets/img assets/video/hero-desktop.mp4 desktop
-python3 tools/make_hero_video.py assets/img assets/video/hero-mobile.mp4 mobile
-ffmpeg -i assets/video/hero-desktop.mp4 -c:v libvpx-vp9 -crf 36 -b:v 0 -an assets/video/hero-desktop.webm
-ffmpeg -i assets/video/hero-mobile.mp4  -c:v libvpx-vp9 -crf 36 -b:v 0 -an assets/video/hero-mobile.webm
-ffmpeg -i assets/video/hero-desktop.mp4 -frames:v 1 assets/img/hero-desktop-poster.webp
-ffmpeg -i assets/video/hero-mobile.mp4  -frames:v 1 assets/img/hero-mobile-poster.webp
+sh tools/make_hero_loop.sh my-clip.mp4        # optional 2nd argument: speed, default 0.6
 ```
+
+`tools/make_hero_video.py` renders the earlier slideshow-style film from stills, if you ever want it back.
 
 ## Preview locally
 
@@ -96,7 +93,7 @@ invitation in a phone-sized and a desktop browser. Screenshots are attached to t
 
 ## Credits
 
-- **Images**: AI-generated in Figma (gemini-3.1-flash-image). The **hero film** is rendered from those images with `tools/make_hero_video.py`.
+- **Images**: AI-generated in Figma (gemini-3.1-flash-image), plus the couple's own photos. The **hero film** is an AI-generated clip supplied by the couple (Adobe Firefly), slowed and looped with `tools/make_hero_loop.sh`.
 - **Music**: *My Love*, supplied by the couple (`assets/audio/my-love.mp3`, trimmed and loudness-matched for background play).
   `tools/compose_canon.py` can still render the earlier harp/piano *Canon in D* arrangement if you prefer it.
 - **Fonts**: Great Vibes, Cormorant Garamond and Cinzel (SIL Open Font License), self-hosted as Latin subsets.
