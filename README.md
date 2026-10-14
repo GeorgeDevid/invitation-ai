@@ -13,7 +13,7 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 | **Background music** | *Canon in D* (Pachelbel) arranged for harp, piano, violin & bass. It starts with the tap (as browsers require) and fades in. The floating disc button pauses or plays it. Music pauses when the tab is hidden. |
 | **AI hero film** | A looping cinematic video built from the AI-generated stills, with slow camera moves, crossfades, bloom and drifting fireflies. There is a landscape cut for desktop and a portrait cut for phones, with an MP4 + WebM fallback. |
 | **Parallax couple scene** | A pinned section where the couple's photos float in, drift and fade out as you scroll, with “chapter” captions. |
-| **Scroll animations** | Fade, blur and slide reveals, parallax florals and backgrounds, a love-story timeline that draws as you read, a hero that dissolves on scroll, a progress bar and a section-aware glass dock. |
+| **Scroll animations** | Fade, blur and slide reveals, parallax florals and backgrounds, a hero that dissolves on scroll, a progress bar and a section-aware glass dock. |
 | **Glass UI** | Frosted `backdrop-filter` cards, dock, music player, tabs and form, in a lavender, lilac and champagne-gold palette. |
 | **Countdown** | Live days / hours / minutes / seconds to 31 Dec 2026, 4:00 PM IST. |
 | **Calendar** | A one-tap `.ics` file (both events, with a reminder 1 day before) plus a Google Calendar link. |
@@ -26,10 +26,10 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 
 Most details live in **`assets/js/config.js`**: names, date, venues, times, the RSVP deadline, the hashtag and the music.
 Elements tagged `data-field="…"` in `index.html` are filled from it automatically.
-Longer text (the love story and the order of the evening) is written directly in `index.html`.
+Longer text (such as the order of the evening) is written directly in `index.html`.
 
 > Venues come from the couple's earlier invitation: St. George Basilica, Angamaly (Holy Mass, 4:00 PM) and the Parish Hall
-> (Reception, 6:30 PM — please confirm this time). The love story and order of the evening are placeholders to personalise.
+> (Reception, 6:30 PM — please confirm this time). The order of the evening is a placeholder to personalise.
 
 ### Make RSVPs reach you
 

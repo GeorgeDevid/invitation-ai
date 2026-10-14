@@ -36,9 +36,7 @@
     <symbol id="i-mail" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"><rect x="3" y="5.5" width="18" height="13" rx="2.5"/><path d="m3.5 7 8.5 6.5L20.5 7"/></g></symbol>
     <symbol id="i-church" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"><path d="M12 2v4M10.3 3.6h3.4M7 21V11l5-4 5 4v10M3 21v-6l4-2.5M21 21v-6l-4-2.5M2 21h20"/><path d="M10.5 21v-3.5a1.5 1.5 0 0 1 3 0V21"/></g></symbol>
     <symbol id="i-glass" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 3h5l-.4 5.2a2.6 2.6 0 0 1-4.2 1.6A2.6 2.6 0 0 1 5 8.2zM14 3h5v5.2a2.6 2.6 0 0 1-4.6 1.6A2.6 2.6 0 0 1 14 8.2zM7.5 10.5V20M16.5 10.5V20M5 20.5h5M14 20.5h5"/></g></symbol>
-    <symbol id="i-ring" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"><circle cx="12" cy="15" r="6"/><path d="m9.5 6.5 2.5-3.5 2.5 3.5-2.5 2z"/></g></symbol>
     <symbol id="i-sparkle" viewBox="0 0 24 24"><path d="M12 2.5c.6 4.6 2.9 6.9 7.5 7.5-4.6.6-6.9 2.9-7.5 7.5-.6-4.6-2.9-6.9-7.5-7.5 4.6-.6 6.9-2.9 7.5-7.5zM19 15.5c.3 2 1.2 2.9 3 3.2-1.8.3-2.7 1.2-3 3.2-.3-2-1.2-2.9-3-3.2 1.8-.3 2.7-1.2 3-3.2z" fill="currentColor"/></symbol>
-    <symbol id="i-plane" viewBox="0 0 24 24"><path d="M21 4 3 11l6.5 2.5L12 20l3-5.5 4.5 2.5z M9.5 13.5 21 4" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></symbol>
     <symbol id="i-share" viewBox="0 0 24 24"><g fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="18" cy="5.5" r="2.5"/><circle cx="6" cy="12" r="2.5"/><circle cx="18" cy="18.5" r="2.5"/><path d="m8.2 10.8 7.6-4.1M8.2 13.2l7.6 4.1"/></g></symbol>
     <symbol id="i-play" viewBox="0 0 24 24"><path d="M8 5.5v13l10.5-6.5z" fill="currentColor"/></symbol>
     <symbol id="i-pause" viewBox="0 0 24 24"><path d="M7 5h3.5v14H7zM13.5 5H17v14h-3.5z" fill="currentColor"/></symbol>
@@ -81,7 +79,7 @@
   <!-- ============ DOCK NAVIGATION ============ -->
   <nav class="dock glass" id="dock" aria-label="Sections">
     <a href="#home" class="is-active"><svg class="ico"><use href="#i-home"/></svg><span>Home</span></a>
-    <a href="#story"><svg class="ico"><use href="#i-heart"/></svg><span>Story</span></a>
+    <a href="#journey"><svg class="ico"><use href="#i-heart"/></svg><span>Story</span></a>
     <a href="#events"><svg class="ico"><use href="#i-calendar"/></svg><span>Events</span></a>
     <a href="#location"><svg class="ico"><use href="#i-pin"/></svg><span>Venue</span></a>
     <a href="#rsvp"><svg class="ico"><use href="#i-mail"/></svg><span>RSVP</span></a>
@@ -152,57 +150,6 @@
           <p class="scene__caption" data-scene="t2"><span class="kicker">Chapter two</span><em>…became a thousand little adventures…</em></p>
           <p class="scene__caption" data-scene="t3"><span class="kicker">Chapter three</span><em>…and now, a lifetime together.</em></p>
         </div>
-      </div>
-    </section>
-
-    <!-- ============ LOVE STORY TIMELINE ============ -->
-    <section class="section story" id="story">
-      <img class="floral floral--story" src="assets/img/florals.webp" alt="" data-parallax="-0.12" loading="lazy">
-      <div class="container">
-        <header class="section__head">
-          <p class="kicker" data-reveal="fade-up">How it all began</p>
-          <h2 class="script-title" data-reveal="blur">Our Love Story</h2>
-        </header>
-
-        <ol class="timeline" id="timeline">
-          <li class="timeline__line" aria-hidden="true"><span id="timeline-fill"></span></li>
-
-          <li class="moment" data-reveal="fade-right">
-            <span class="moment__dot"><svg class="ico"><use href="#i-sparkle"/></svg></span>
-            <div class="moment__card glass">
-              <span class="moment__year">June 2019</span>
-              <h3>The First Hello</h3>
-              <p>A sudden monsoon shower, one borrowed umbrella and a conversation that went on long after the rain had stopped.</p>
-            </div>
-          </li>
-
-          <li class="moment" data-reveal="fade-left">
-            <span class="moment__dot"><svg class="ico"><use href="#i-plane"/></svg></span>
-            <div class="moment__card glass">
-              <span class="moment__year">March 2021</span>
-              <h3>Our First Adventure</h3>
-              <p>A road trip into the misty tea hills of Munnar taught us that every road is more beautiful when we travel it together.</p>
-            </div>
-          </li>
-
-          <li class="moment" data-reveal="fade-right">
-            <span class="moment__dot"><svg class="ico"><use href="#i-ring"/></svg></span>
-            <div class="moment__card glass">
-              <span class="moment__year">February 2025</span>
-              <h3>The Proposal</h3>
-              <p>Beneath a lavender sky at sunset, George knelt with a trembling smile. Tess said “yes” before he could finish the question.</p>
-            </div>
-          </li>
-
-          <li class="moment" data-reveal="fade-left">
-            <span class="moment__dot"><svg class="ico"><use href="#i-heart-fill"/></svg></span>
-            <div class="moment__card glass">
-              <span class="moment__year">31 December 2026</span>
-              <h3>Forever Begins</h3>
-              <p>On the last evening of the year we say “I do” — and step into 2027 as husband and wife, surrounded by everyone we love.</p>
-            </div>
-          </li>
-        </ol>
       </div>
     </section>
 

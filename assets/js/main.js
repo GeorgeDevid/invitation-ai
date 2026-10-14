@@ -173,7 +173,7 @@
   $$("[data-reveal]").forEach((el) => revealIO.observe(el));
 
   /* ==========================================================
-     SCROLL ENGINE — parallax, scene, progress, timeline
+     SCROLL ENGINE — parallax, scene, progress
      ========================================================== */
   const progressBar = $("#progress-bar");
   const hero = $("#home");
@@ -184,8 +184,6 @@
   const parallaxInner = $$("[data-parallax-inner]");
   const scene = $("#journey");
   const sceneEls = Object.fromEntries($$("[data-scene]", scene).map((el) => [el.dataset.scene, el]));
-  const timeline = $("#timeline");
-  const timelineFill = $("#timeline-fill");
 
   // keyframes: [progress, {x: vw, y: vh, r: deg, s: scale, o: opacity}]
   const SCENE = {
@@ -269,12 +267,6 @@
           : `translate(-50%, -50%) translate3d(${v.x}vw, ${v.y}vh, 0) rotate(${v.r}deg) scale(${v.s})`;
       }
     }
-
-    // timeline line draws as you read
-    const tr = timeline.getBoundingClientRect();
-    if (tr.bottom > 0 && tr.top < vh) {
-      timelineFill.style.transform = `scaleY(${clamp((vh * 0.62 - tr.top) / tr.height, 0, 1)})`;
-    }
   }
 
   let ticking = false;
@@ -291,7 +283,7 @@
   const dockLinks = $$("#dock a");
   const groups = [
     ["home", ["home"]],
-    ["story", ["verse", "journey", "story"]],
+    ["journey", ["verse", "journey"]],
     ["events", ["countdown", "events"]],
     ["location", ["location"]],
     ["rsvp", ["rsvp", "thanks"]],
