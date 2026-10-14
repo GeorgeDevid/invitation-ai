@@ -9,7 +9,7 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 
 | Feature | How it works |
 | --- | --- |
-| **Tap to open** | A 3D lavender envelope with a wax “G&T” seal. Tapping cracks the seal, opens the flap and slides out the letter before the invitation appears. |
+| **Tap to open** | The opening film (a lavender envelope with a gold wax seal) waits on its first frame. One tap starts the music and plays it, and the invitation fades in as the envelope opens to white. |
 | **Background music** | *Canon in D* (Pachelbel) arranged for harp, piano, violin & bass. It starts with the tap (as browsers require) and fades in. The floating disc button pauses or plays it. Music pauses when the tab is hidden. |
 | **AI hero film** | A looping cinematic video built from the AI-generated stills, with slow camera moves, crossfades, bloom and drifting fireflies. There is a landscape cut for desktop and a portrait cut for phones, with an MP4 + WebM fallback. |
 | **Parallax couple scene** | A pinned section where the couple's photos float in, drift and fade out as you scroll, with “chapter” captions. |
@@ -19,7 +19,7 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 | **Calendar** | A one-tap `.ics` file (both events, with a reminder 1 day before) plus a Google Calendar link. |
 | **Location** | Map tabs for the church and the reception, with “Directions” links. |
 | **RSVP** | Just the guest's full name and number of guests, with a heart-burst confirmation. The browser remembers the reply so a returning guest can resend it. |
-| **Personal links** | `index.html?to=Anna%20%26%20Family` shows “Dear Anna & Family” on the envelope and pre-fills the RSVP name. |
+| **Personal links** | `index.html?to=Anna%20%26%20Family` shows “Dear Anna & Family” on the opening screen and pre-fills the RSVP name. |
 | **Extras** | Falling petals, sparkle cursor (desktop), share button, social preview image, `prefers-reduced-motion` support. |
 
 ## Edit the details

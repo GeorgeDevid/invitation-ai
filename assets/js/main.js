@@ -118,34 +118,49 @@
   }).observe($("#home"));
 
   /* ==========================================================
-     ENVELOPE / OPEN INVITATION
+     OPENING FILM / OPEN INVITATION
      ========================================================== */
   const intro = $("#intro");
+  const introVideo = $("#intro-video");
   const startHash = location.hash && document.querySelector(location.hash) ? location.hash : "";
   if (location.hash) history.replaceState(null, "", location.pathname + location.search);
   scrollTo(0, 0);
   let opened = false;
 
+  let revealed = false;
+  function reveal() {
+    if (revealed) return;
+    revealed = true;
+    intro.classList.add("is-leaving");
+    document.body.classList.remove("is-locked");
+    document.body.classList.add("is-open");
+    video.play().catch(() => {});
+    musicBtn.classList.add("show-label");
+    setTimeout(() => musicBtn.classList.remove("show-label"), 3500);
+    setTimeout(() => {
+      intro.hidden = true;
+      introVideo.pause();
+      if (startHash) document.querySelector(startHash).scrollIntoView({ behavior: "smooth" });
+    }, 1300);
+  }
+
   function openInvitation() {
     if (opened) return;
     opened = true;
     playMusic(); // inside the tap gesture so mobile browsers allow audio
-    intro.classList.add("is-opening");
-    const t = reduceMotion ? 0.15 : 1;
-    setTimeout(() => {
-      intro.classList.add("is-leaving");
-      document.body.classList.remove("is-locked");
-      document.body.classList.add("is-open");
-      video.play().catch(() => {});
-      musicBtn.classList.add("show-label");
-      setTimeout(() => musicBtn.classList.remove("show-label"), 3500);
-    }, 3000 * t);
-    setTimeout(() => {
-      intro.hidden = true;
-      if (startHash) document.querySelector(startHash).scrollIntoView({ behavior: "smooth" });
-    }, 4100 * t);
+    intro.classList.add("is-playing");
+    if (reduceMotion) { reveal(); return; }
+    // The film ends on a white frame: start fading the site in just before it finishes.
+    introVideo.addEventListener("timeupdate", () => {
+      if (introVideo.duration && introVideo.currentTime >= introVideo.duration - 0.3) reveal();
+    });
+    introVideo.addEventListener("ended", reveal);
+    introVideo.addEventListener("error", reveal);
+    const p = introVideo.play();
+    if (p && p.catch) p.catch(reveal);
+    setTimeout(reveal, 6000); // safety net if the film stalls on a slow connection
   }
-  intro.addEventListener("click", openInvitation); // tap anywhere — the envelope button also handles Enter/Space
+  intro.addEventListener("click", openInvitation); // tap anywhere — the button also handles Enter/Space
 
   /* ==========================================================
      REVEAL ON SCROLL
