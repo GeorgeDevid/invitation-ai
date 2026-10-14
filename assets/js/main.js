@@ -421,7 +421,6 @@
      ========================================================== */
   const form = $("#rsvp-form");
   const done = $("#rsvp-done");
-  const yesBox = $("#rsvp-yes");
   const countEl = $("#guest-count");
   const errEl = $("#form-error");
   const submitBtn = $("#rsvp-submit");
@@ -432,40 +431,24 @@
 
   form.addEventListener("focusin", () => document.body.classList.add("is-typing"));
   form.addEventListener("focusout", () => document.body.classList.remove("is-typing"));
-  form.addEventListener("change", (e) => {
-    if (e.target.name === "attending") yesBox.classList.toggle("is-collapsed", e.target.value === "no");
-  });
-  $$("[data-step]", form).forEach((b) => b.addEventListener("click", () => {
-    guests = clamp(guests + Number(b.dataset.step), 1, 8);
+  function setGuests(n) {
+    guests = clamp(Number(n) || 1, 1, 20);
     countEl.textContent = guests;
-  }));
+  }
+  $$("[data-step]", form).forEach((b) => b.addEventListener("click", () => setGuests(guests + Number(b.dataset.step))));
+
+  const guestText = (n) => `${n} guest${n > 1 ? "s" : ""}`;
 
   function collect() {
-    const fd = new FormData(form);
-    const attending = fd.get("attending") === "yes";
     return {
-      name: String(fd.get("name") || "").trim(),
-      contact: String(fd.get("contact") || "").trim(),
-      attending: attending ? "Joyfully accepts" : "Regretfully declines",
-      guests: attending ? guests : 0,
-      events: attending ? fd.getAll("events").join(", ") : "",
-      meal: attending ? fd.get("meal") : "",
-      message: String(fd.get("message") || "").trim(),
+      name: String(new FormData(form).get("name") || "").trim(),
+      guests,
       submittedAt: new Date().toISOString(),
     };
   }
 
   function asText(d) {
-    return [
-      `RSVP — ${couple} · 31 Dec 2026`,
-      `Name: ${d.name}`,
-      `Contact: ${d.contact}`,
-      `Reply: ${d.attending}`,
-      d.guests ? `Guests: ${d.guests}` : "",
-      d.events ? `Attending: ${d.events}` : "",
-      d.meal ? `Meal: ${d.meal}` : "",
-      d.message ? `Wishes: ${d.message}` : "",
-    ].filter(Boolean).join("\n");
+    return [`RSVP — ${couple} · 31 Dec 2026`, `Name: ${d.name}`, `Guests: ${d.guests}`].join("\n");
   }
 
   async function deliver(d) {
@@ -497,20 +480,17 @@
   function showDone(d, again) {
     form.hidden = true;
     done.hidden = false;
-    const yes = d.attending.startsWith("Joy");
-    const first = d.name.split(" ")[0];
-    const summary = `${d.attending.toLowerCase()}${d.guests ? `, ${d.guests} guest${d.guests > 1 ? "s" : ""}` : ""}`;
+    const first = String(d.name).split(" ")[0];
+    const count = clamp(Number(d.guests) || 1, 1, 20);
     // Only an endpoint delivery is confirmed; anything else (incl. older saved replies) may not have been sent.
     const pending = d.delivery === "sent" ? null : SEND_STEP[d.delivery] || SEND_STEP["whatsapp-pick"];
-    $("#rsvp-done-title").textContent = pending
-      ? again ? `Welcome back, ${first}` : `Almost there, ${first}!`
-      : yes ? `Thank you, ${first}!` : "We'll miss you";
+    $("#rsvp-done-title").textContent = pending ? (again ? `Welcome back, ${first}` : `Almost there, ${first}!`) : `Thank you, ${first}!`;
     $("#rsvp-again").textContent = pending ? "Review & send again" : "Change my reply";
     $("#rsvp-done-text").textContent = again
       ? pending
-        ? `You prepared your reply (${summary}). If it wasn't sent, tap below to send it again.`
-        : `We have your reply (${summary}). You can change it below.`
-      : pending || (yes ? "Your reply is with us — we can't wait to celebrate with you under the lavender sky." : "Thank you for letting us know. You'll be in our hearts on our special day.");
+        ? `You prepared your reply for ${guestText(count)}. If it wasn't sent, tap below to send it again.`
+        : `We have your reply for ${guestText(count)}. You can change it below.`
+      : pending || `We've saved ${guestText(count)} for you — we can't wait to celebrate with you under the lavender sky.`;
   }
 
   function burst(x, y) {
@@ -536,9 +516,8 @@
     e.preventDefault();
     errEl.hidden = true;
     const d = collect();
-    $$(".field", form).forEach((f) => f.classList.remove("is-invalid"));
-    if (!d.name) { $("#f-name").parentElement.classList.add("is-invalid"); errEl.textContent = "Please tell us your name."; errEl.hidden = false; $("#f-name").focus(); return; }
-    if (!d.contact) { $("#f-contact").parentElement.classList.add("is-invalid"); errEl.textContent = "Please add a phone number or email so we can reach you."; errEl.hidden = false; $("#f-contact").focus(); return; }
+    $("#f-name").parentElement.classList.remove("is-invalid");
+    if (!d.name) { $("#f-name").parentElement.classList.add("is-invalid"); errEl.textContent = "Please tell us your full name."; errEl.hidden = false; $("#f-name").focus(); return; }
     submitBtn.classList.add("is-loading");
     $(".btn__text", submitBtn).textContent = "Sending…";
     try {
@@ -560,27 +539,12 @@
 
   $("#rsvp-again").addEventListener("click", () => { done.hidden = true; form.hidden = false; form.classList.add("is-in"); });
 
-  // Put a saved reply back into the form so "send again" resends exactly what the guest chose.
-  function restoreForm(saved) {
-    $("#f-name").value = saved.name || "";
-    $("#f-contact").value = saved.contact || "";
-    $("#f-msg").value = saved.message || "";
-    const yes = String(saved.attending || "").startsWith("Joy");
-    $$('input[name="attending"]', form).forEach((r) => { r.checked = r.value === (yes ? "yes" : "no"); });
-    yesBox.classList.toggle("is-collapsed", !yes);
-    if (yes) {
-      guests = clamp(Number(saved.guests) || 1, 1, 8);
-      countEl.textContent = guests;
-      if ([...$("#f-meal").options].some((o) => o.value === saved.meal)) $("#f-meal").value = saved.meal;
-      const chosen = String(saved.events || "").split(", ").filter(Boolean);
-      if (chosen.length) $$('input[name="events"]', form).forEach((c) => { c.checked = chosen.includes(c.value); });
-    }
-  }
-
+  // A returning guest gets their name and guest count back, so "send again" resends the same reply.
   try {
     const saved = JSON.parse(localStorage.getItem(STORE) || "null");
     if (saved && saved.name) {
-      restoreForm(saved);
+      $("#f-name").value = saved.name;
+      setGuests(saved.guests);
       showDone(saved, true);
     }
   } catch (_) { /* ignore */ }

@@ -18,7 +18,7 @@ It is a static site (plain HTML, CSS and JavaScript with no build step), so you 
 | **Countdown** | Live days / hours / minutes / seconds to 31 Dec 2026, 4:00 PM IST. |
 | **Calendar** | A one-tap `.ics` file (both events, with a reminder 1 day before) plus a Google Calendar link. |
 | **Location** | Map tabs for the church and the reception, with “Directions” links. |
-| **RSVP** | Accept/decline, guest count, events, meal choice and wishes, with a heart-burst confirmation. The browser remembers the reply. |
+| **RSVP** | Just the guest's full name and number of guests, with a heart-burst confirmation. The browser remembers the reply so a returning guest can resend it. |
 | **Personal links** | `index.html?to=Anna%20%26%20Family` shows “Dear Anna & Family” on the envelope and pre-fills the RSVP name. |
 | **Extras** | Falling petals, sparkle cursor (desktop), share button, social preview image, `prefers-reduced-motion` support. |
 

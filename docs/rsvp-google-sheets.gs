@@ -10,7 +10,7 @@
  * Every reply lands as a new row in the "RSVPs" tab.
  */
 const SHEET_NAME = "RSVPs";
-const COLUMNS = ["submittedAt", "name", "contact", "attending", "guests", "events", "meal", "message"];
+const COLUMNS = ["submittedAt", "name", "guests"];
 
 function doPost(e) {
   const lock = LockService.getScriptLock();

@@ -336,54 +336,16 @@
         </header>
 
         <form class="rsvp-card glass glass--dark" id="rsvp-form" novalidate data-reveal="fade-up">
-          <div class="choice" role="radiogroup" aria-label="Will you attend?">
-            <label class="choice__opt">
-              <input type="radio" name="attending" value="yes" checked>
-              <span><svg class="ico"><use href="#i-heart-fill"/></svg> Joyfully accepts</span>
-            </label>
-            <label class="choice__opt">
-              <input type="radio" name="attending" value="no">
-              <span>Regretfully declines</span>
-            </label>
-          </div>
-
           <div class="field">
             <input id="f-name" name="name" type="text" autocomplete="name" placeholder=" " required>
             <label for="f-name">Your full name</label>
           </div>
-          <div class="field">
-            <input id="f-contact" name="contact" type="text" autocomplete="tel" placeholder=" " required>
-            <label for="f-contact">Phone or email</label>
-          </div>
 
-          <div class="rsvp-yes" id="rsvp-yes">
-            <div class="row">
-              <div class="stepper" aria-label="Number of guests">
-                <span class="stepper__label">Guests</span>
-                <button type="button" data-step="-1" aria-label="Fewer guests">−</button>
-                <output id="guest-count" name="guests">1</output>
-                <button type="button" data-step="1" aria-label="More guests">+</button>
-              </div>
-              <div class="field field--select">
-                <select id="f-meal" name="meal">
-                  <option value="Non-vegetarian">Non-vegetarian</option>
-                  <option value="Vegetarian">Vegetarian</option>
-                  <option value="Vegan">Vegan</option>
-                </select>
-                <label for="f-meal">Meal preference</label>
-              </div>
-            </div>
-
-            <fieldset class="checks">
-              <legend>I'll be there for</legend>
-              <label><input type="checkbox" name="events" value="Holy Mass" checked><span><span class="checks__text">Holy Mass · <span data-field="events.mass.timeLabel">4:00 PM</span></span></span></label>
-              <label><input type="checkbox" name="events" value="Reception" checked><span><span class="checks__text">Reception · <span data-field="events.reception.timeLabel">6:30 PM</span></span></span></label>
-            </fieldset>
-          </div>
-
-          <div class="field">
-            <textarea id="f-msg" name="message" rows="3" placeholder=" "></textarea>
-            <label for="f-msg">A wish for the couple (optional)</label>
+          <div class="stepper" role="group" aria-label="Number of guests">
+            <span class="stepper__label">Number of guests</span>
+            <button type="button" data-step="-1" aria-label="Fewer guests">−</button>
+            <output id="guest-count" name="guests" aria-live="polite">1</output>
+            <button type="button" data-step="1" aria-label="More guests">+</button>
           </div>
 
           <p class="form-error" id="form-error" role="alert" hidden></p>
