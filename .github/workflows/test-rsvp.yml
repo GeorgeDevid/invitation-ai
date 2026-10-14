@@ -1,0 +1,94 @@
+name: Test RSVP to Google Sheet
+
+# Manually run from the Actions tab: submits one clearly labelled test RSVP from the live site in
+# Chrome, Safari (WebKit) and Firefox engines and checks each guest would see "Thank you".
+# Each run adds up to three "TEST ... please delete" rows to the RSVP sheet.
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: Live site URL (no trailing slash)
+        required: true
+        default: https://george-and-tess-wedding-m73p.vercel.app
+
+permissions:
+  contents: read
+
+jobs:
+  rsvp:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    env:
+      SITE: ${{ inputs.url }}
+    steps:
+      - name: Apps Script health check
+        run: |
+          ep=$(curl -fsSL "$SITE/assets/js/config.js" | sed -n 's/^ *endpoint: "\(https[^"]*\)".*/\1/p' | head -1)
+          echo "Endpoint: $ep" | tee -a "$GITHUB_STEP_SUMMARY"
+          [ -n "$ep" ] || { echo "No rsvp.endpoint on the live site" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
+          body=$(curl -sSL "$ep")
+          echo "GET -> ${body:0:300}" | tee -a "$GITHUB_STEP_SUMMARY"
+          echo "$body" | grep -q '"ok":true' || { echo "Health check did not return ok:true" | tee -a "$GITHUB_STEP_SUMMARY"; exit 1; }
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install browsers
+        run: |
+          npm install --no-save --no-package-lock playwright@1.56.1
+          npx playwright install --with-deps chromium webkit firefox
+
+      - name: Submit a test RSVP in each browser engine
+        shell: bash
+        run: |
+          cat > /tmp/rsvp.cjs <<'EOF'
+          const pw = require(process.cwd() + '/node_modules/playwright');
+          const site = process.env.SITE;
+          (async () => {
+            const results = {};
+            const engines = { Chrome: ['chromium', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }],
+                              Safari: ['webkit', { viewport: { width: 390, height: 844 }, isMobile: true, hasTouch: true }],
+                              Firefox: ['firefox', { viewport: { width: 1280, height: 800 } }] };
+            for (const [label, [engine, opts]] of Object.entries(engines)) {
+              const browser = await pw[engine].launch();
+              const page = await (await browser.newContext(opts)).newPage();
+              const r = { console: [] };
+              page.on('console', (m) => { if (m.type() === 'error') r.console.push(m.text()); });
+              page.on('response', async (res) => {
+                if (/script\.google(usercontent)?\.com/.test(res.url())) {
+                  r.responses = r.responses || [];
+                  r.responses.push({ status: res.status(), url: res.url().slice(0, 80), acao: res.headers()['access-control-allow-origin'] || null });
+                }
+              });
+              await page.goto(site + '/', { waitUntil: 'load' });
+              await page.click('#intro-open', { force: true });
+              await page.waitForTimeout(3000);
+              await page.evaluate(() => document.querySelector('#rsvp').scrollIntoView({ behavior: 'instant' }));
+              await page.fill('#f-name', `TEST ${label} (from Claude) - please delete`);
+              await page.click('[data-step="1"]');
+              await page.click('#rsvp-submit');
+              await page.waitForFunction(() => !document.querySelector('#rsvp-done').hidden || !document.querySelector('#form-error').hidden, null, { timeout: 30000 }).catch(() => {});
+              r.saved = await page.evaluate(() => !document.querySelector('#rsvp-done').hidden);
+              r.title = await page.textContent('#rsvp-done-title');
+              r.text = await page.textContent('#rsvp-done-text');
+              r.error = await page.evaluate(() => { const e = document.querySelector('#form-error'); return e.hidden ? null : e.textContent; });
+              await page.screenshot({ path: `shots/rsvp-${label}.png` });
+              results[label] = r;
+              await browser.close();
+            }
+            console.log('RSVP_RESULT ' + JSON.stringify(results));
+            process.exit(Object.values(results).every((r) => r.saved && /^Thank you/.test(r.title)) ? 0 : 1);
+          })();
+          EOF
+          mkdir -p shots
+          node /tmp/rsvp.cjs | tee /tmp/rsvp.log
+          echo '```json' >> "$GITHUB_STEP_SUMMARY"
+          sed -n 's/^RSVP_RESULT //p' /tmp/rsvp.log >> "$GITHUB_STEP_SUMMARY"
+          echo '```' >> "$GITHUB_STEP_SUMMARY"
+
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: rsvp-screenshots
+          path: shots/

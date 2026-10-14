@@ -54,7 +54,7 @@ window.WEDDING = {
      * With none set, WhatsApp opens with the reply filled in and the guest
      * picks George or Tess to send it to.
      */
-    endpoint: "",
+    endpoint: "https://script.google.com/macros/s/AKfycbytQTTKffRHRKgu87lVI-Uc2iYXmQfLgQ2JFm-UMqiWfGxE_N2Pd7-QHPVhknpiaA/exec",
     whatsapp: "",
     email: "",
   },
