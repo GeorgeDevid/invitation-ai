@@ -650,7 +650,7 @@ body.is-open .scroll-cue { opacity: .9; }
    FINALE
    ========================================================== */
 .finale { position: relative; overflow: hidden; color: #fff; text-align: center; isolation: isolate; background: #2a1650; padding: clamp(120px, 16vw, 200px) 0 120px; }
-.finale__bg { background-image: url("../img/couple-walk.webp"); background-position: center 60%; }
+.finale__bg { background-image: url("../img/finale-lavender-walk.webp"); background-position: center 36%; }
 .finale__veil { position: absolute; inset: 0; z-index: -1; background: linear-gradient(180deg, #2a1650 0%, rgba(44, 24, 82, .5) 22%, rgba(32, 16, 60, .8) 100%); }
 .finale .kicker { color: var(--lav-200); }
 .finale__names { font-family: var(--f-script); font-weight: 400; font-size: clamp(70px, 15vw, 140px); margin: 0; line-height: 1.05; text-shadow: 0 0 50px rgba(199, 176, 236, .7); }
