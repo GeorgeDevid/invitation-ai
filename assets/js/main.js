@@ -598,7 +598,8 @@
      SHARE
      ========================================================== */
   $("#share-btn").addEventListener("click", async () => {
-    const url = location.origin + location.pathname;
+    // always share the main address (og:url), even when this copy was opened from an older link
+    const url = ($('meta[property="og:url"]') || {}).content || location.origin + location.pathname;
     const data = { title: `${couple} — Wedding Invitation`, text: `You're invited to the wedding of ${couple} · 31 December 2026`, url };
     try {
       if (navigator.share) { await navigator.share(data); return; }

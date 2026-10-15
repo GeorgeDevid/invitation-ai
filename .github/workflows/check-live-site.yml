@@ -8,7 +8,7 @@ on:
       url:
         description: Live site URL (no trailing slash)
         required: true
-        default: https://george-and-tess-wedding-m73p.vercel.app
+        default: https://george-tess-invitation.vercel.app
 
 permissions:
   contents: read

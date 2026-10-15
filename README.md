@@ -65,7 +65,8 @@ python3 -m http.server 8000
 
 ## Live site
 
-**https://george-and-tess-wedding-m73p.vercel.app** (Vercel project `george-and-tess-wedding-m73p`).
+**https://george-tess-invitation.vercel.app** (Vercel project `george-and-tess-wedding-m73p`; the older address
+https://george-and-tess-wedding-m73p.vercel.app still works, so links already sent keep opening the invitation).
 
 Vercel's GitHub app is installed on a different GitHub account, so this deployment does not use a Git connection.
 Instead it was created with the two files in [`deploy/vercel/`](deploy/vercel). At build time `build.sh` downloads this
@@ -79,7 +80,7 @@ latest production deployment → **⋯ → Redeploy**. The build fetches the new
 > redeploy the older invitation over this one. Disconnect it under *Settings → Git* if you no longer use it.
 
 Guests can be sent personal links such as
-`https://george-and-tess-wedding-m73p.vercel.app/?to=Uncle%20Joseph%20%26%20Family`.
+`https://george-tess-invitation.vercel.app/?to=Uncle%20Joseph%20%26%20Family`.
 
 ### Other hosts
 
