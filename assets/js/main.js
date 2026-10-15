@@ -69,7 +69,7 @@
   }
 
   function playMusic() {
-    if (!audio.src) audio.src = music.src || "assets/audio/my-love.mp3";
+    if (!audio.src) audio.src = music.src || "assets/audio/my-love-from-36s.mp3";
     wantMusic = true;
     audio.volume = 0;
     const p = audio.play();

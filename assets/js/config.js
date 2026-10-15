@@ -60,7 +60,7 @@ window.WEDDING = {
   },
 
   music: {
-    src: "assets/audio/my-love.mp3",
+    src: "assets/audio/my-love-from-36s.mp3",
     title: "My Love",
     volume: 0.6,
   },

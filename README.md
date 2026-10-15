@@ -101,6 +101,6 @@ site in Chrome, Safari (WebKit) and Firefox engines and confirms each shows the 
 ## Credits
 
 - **Images**: AI-generated in Figma (gemini-3.1-flash-image), plus the couple's own photos. The **hero film** is an AI-generated clip supplied by the couple (Adobe Firefly), slowed and looped with `tools/make_hero_loop.sh`.
-- **Music**: *My Love*, supplied by the couple (`assets/audio/my-love.mp3`, trimmed and loudness-matched for background play).
+- **Music**: *My Love*, supplied by the couple (`assets/audio/my-love-from-36s.mp3`: starts at 0:36 of the song, trimmed and loudness-matched for background play).
   `tools/compose_canon.py` can still render the earlier harp/piano *Canon in D* arrangement if you prefer it.
 - **Fonts**: Great Vibes, Cormorant Garamond and Cinzel (SIL Open Font License), self-hosted as Latin subsets.
