@@ -1,7 +1,7 @@
 # George & Tess — Wedding Invitation 💜
 
 A dreamy, classic western wedding invitation website in lavender & glass.
-Thursday, **31 December 2026** · Holy Mass at **4:00 PM** · Reception from **6:30 PM** · St. George Basilica, Angamaly, Kerala.
+Thursday, **31 December 2026** · Holy Mass at **4:00 PM** · Reception from **6:00 PM** · St. George Basilica, Angamaly, Kerala.
 
 It is a static site (plain HTML, CSS and JavaScript with no build step), so you can host it anywhere.
 
@@ -29,7 +29,7 @@ Elements tagged `data-field="…"` in `index.html` are filled from it automatica
 Longer text (such as the order of the evening) is written directly in `index.html`.
 
 > Venues come from the couple's earlier invitation: St. George Basilica, Angamaly (Holy Mass, 4:00 PM) and the Parish Hall
-> (Reception, 6:30 PM — please confirm this time). The order of the evening is a placeholder to personalise.
+> (Reception, 6:00 PM). The order of the evening is a placeholder to personalise.
 
 ### Make RSVPs reach you (Google Sheet)
 
