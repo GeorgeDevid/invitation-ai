@@ -32,9 +32,9 @@ window.WEDDING = {
     },
     reception: {
       title: "Wedding Reception",
-      start: "2026-12-31T18:30:00+05:30",
+      start: "2026-12-31T18:00:00+05:30",
       end: "2026-12-31T22:00:00+05:30",
-      timeLabel: "6:30 PM",
+      timeLabel: "6:00 PM",
       venue: "Parish Hall, St. George Basilica",
       address: "Angamaly, Ernakulam, Kerala 683572",
       mapQuery: "St. George Syro-Malabar Basilica, Angamaly, Kerala",
